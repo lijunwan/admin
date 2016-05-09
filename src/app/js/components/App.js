@@ -23,13 +23,13 @@ export default class App extends Component{
       return (
           <div>
             {
-                this.props.routes[1]&&this.props.routes[1].name=="login" ? "" :
+                this.props.location.pathname=="login" || this.props.location.pathname =="/" ? "" :
                 <div>
                     <Header {...this.props}/>
                 </div>
             }
             {
-              this.props.routes[1]&&this.props.routes[1].name=="shopCart" || this.props.routes[1]&&this.props.routes[1].name=="favorite" ?
+              this.props.location.pathname =="shopCart" || this.props.routes[1]&&this.props.routes[1].name=="favorite" ?
               <div>
                   {React.cloneElement(this.props.children, this.props)}
               </div>
@@ -39,7 +39,7 @@ export default class App extends Component{
               </div>
             }
 
-            <Footer />
+            {/*<Footer />*/}
           </div>
       );
   }

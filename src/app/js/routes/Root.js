@@ -24,7 +24,7 @@ var DefaultRoute = Router.DefaultRoute;
 var IndexRoute  = Router.IndexRoute;
 var routes = (
     <Route name="main"  path="/" component={App}>
-      <IndexRoute component={Index} />
+      <IndexRoute component={Login} />
       <Route name="index" path='/index' component={Index}/>
       <Route name="login" path='/login' component={Login} />
       <Route name="register" path='/register' component={Register} />

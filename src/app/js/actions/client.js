@@ -30,7 +30,7 @@ import HttpRequest from 'superagent';
 export function checkLogin(params) {
   return dispatch => {
     console.log("????")
-    HttpRequest.post('/api/user/login')
+    HttpRequest.post('/api/account/login')
       .send(params)
       .end(function(err,resp){
        //let info=loginCode(err, resp);

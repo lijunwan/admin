@@ -5,152 +5,156 @@ var connection = mongoose.connection;
 //var Db = mongodb.Db;
 //var Connection = mongodb.Connection;
 var Schema = mongoose.Schema;
-var db = mongoose.createConnection('localhost',"bookstore");
+var db = mongoose.createConnection('localhost',"admin");
 db.on('error',console.error.bind(console,'connection error'));
 var dataModel = {};
 db.once('open', function (callback) {
-	var userSchema = new Schema({
-		phone:String,//电话
-		password:String,//密码
-		userName:String,//用户名
-		shopCart:[],//购物车 数组保存id
-		payOrder:[],//账单
-		favorite:[],//收藏夹
-		sex:String,//性别 1 男 2 女 0 其他
-		birthday:String,//生日
-		headImg:String,//头像 保存图片的地址
-		name: String,//真实姓名
-		ShippingAddress:[],//收货地址s
-	});
-	var shopCartSchema = new Schema({
-		bookId: String,//书的id
-		count: Number,//数量
-		userId: String, //用户ID
-		aprice: Number,//售价
-		//sumMon: Number, //金额
-		bookName: String,
-		cover: String,
-	})
-	//暂时不用
-	var logSchema = new Schema({
-		id:String,
-		phone:String,
-		userName:String,
-		lastTime:Date,
-	});
-	var baseInfoSchema = new Schema({
-		sex:Number,//性别 1 男 2 女 0 其他
-		birthday:String,//生日
-		headImg:String,//头像 保存图片的地址
-		name: String,//真实姓名
-		ShippingAddress:[],//收货地址
-	});
-	var bookInfoSchema = new Schema({
-		bookName:String,//书名
-		author:String,//作者
-		pubHouse:String,//出版社
-		pubDate:String,//出版时间
-		comment:[],//评论 存放评论的id
-		price: Number,//定价
-		discount: Number,//折扣
-		aprice: Number,//售价
-		cover:String,//封面 保存 照片位置
-		picture:[],//书籍的图片
-		editions:String,//版次
-		pages:Number,
-		words:Number,
-		type:String,//分类
-		authorIntro:[],//作者简介
-		stocks:Number,//库存
-		saleNumber:Number,//销售量，
-		prestocks: Number,//进货量,
-		introduce:[],//简介，
-		scores:Number,//评分
-		flag: String,//书籍的状态
-		favorite: [],
-		evaluation:[],//评介　
-	});
-	//折扣书籍
-	var bookOnSaleSchema = new Schema ({
-		bookName:String,//书名
-		author:String,//作者
-		price: Number,//定价
-		discount: Number,//折扣
-		aprice: Number,
-		cover:String,//封面 保存 照片位置
-		detail: String,
-	});
-	//新书上架
-	var bookNewSchema = new Schema ({
-		bookName:String,//书名
-		author:String,//作者
-		price: Number,//定价
-		discount: Number,//折扣
-		aprice: Number,
-		cover:String,//封面 保存 照片位置
-		detail: String,
-	});
-	var bookClassSchema = new Schema({
-		flag:String,//标志
-		name:String,//分类的名字``
-		children:[],
-	});
-	var favoriteSchema = new Schema({
-		time: Date,
-		bookId: String,
-		userId: String,
-		collectPrice: Number,//收藏夹
-		aprice:Number, //此时的价格 bookInfo 数据库
-		bookName: String,// bookInfo 数据库
-		cover:String //bookInfo 数据库
-		// flag 标志 bookInfo 降价 促销 缺货 正常
-	});
-	var orderSchema = new Schema({
-		time: Date,//订单成交时间
-	  aprice: Number,
-		cover: String,
-		bookName: String,
-		sumMon: Number, //实际金额
-		userId: String, //用户id
-	  address: String,//收货地址
-	  orderStatus: String,//unpaied paided/unsend send/unrecive recive
-		bookId: String,
-		count: Number,
-	});
-	var saleRecordsSchema = new Schema({
-		bookId: String,
-		userId: String,
-		count: Number,
-		orderId: String,
-		salePrice: Number,
-		sumMon: Number,
-	});
-	var promBookSchema = new Schema({
-		bookId: String,
-	})
-	var bookMenuSchema = new Schema({
-		flag: String,
-		name: String,
-		children: [],
-	});
-	var bookMenuConfigSchema = new Schema({
-		type: String,
-		name: String,
-	})
-	userSchema.statics.findUserById = findItemById({errorCode:404405,message:"未找到相关的用户"});
-	bookInfoSchema.statics.findBookById = findItemById({errorCode:404406,message:"未找到相关的书籍"});
-	bookInfoSchema.statics.findByIdList = findItemsByList({errorCode:404602,message:"未找到相关的书籍信息"})
-	shopCartSchema.statics.findByIdList = findItemsByList({errorCode:404601,message:"未找到该用户购物车的信息"})
-	bookInfoSchema.statics.findItemsByList = findItemsByList({errorCode:404406,message:"未找到相关的书籍"})
-	favoriteSchema.statics.findFavoriteById = findItemById({errorCode:404407,message:"未找到相关的收藏夹"});
-	favoriteSchema.statics.createFavorite = createItem({errorCode:405401,message:"操作收藏夹失败"});
-	favoriteSchema.statics.hasRecords = dbHasRecords();
-	favoriteSchema.statics.findItems = findItems({errorCode:404600,message:'未找到相关收藏'});
-	orderSchema.statics.createItem = createItem({errorCode:404700,message:'创建订单失败'})
-	orderSchema.statics.findItems = findItems({errorCode:404700,message:'查找订单失败'})
-	orderSchema.statics.findItemById = findItemById({errorCode:404701,message:'查找订单失败'})
-	orderSchema.statics.findItemsByList = findItemsByList({errorCode: 404101, message:'订单查找失败'})
-	saleRecordsSchema.statics.createItem = createItem({errorCode:404702,message:'支付失败'})
+	   var accountSchema = new Schema({
+	   		userName: String,
+	   		password: String,
+	   })
+	// var userSchema = new Schema({
+	// 	phone:String,//电话
+	// 	password:String,//密码
+	// 	userName:String,//用户名
+	// 	shopCart:[],//购物车 数组保存id
+	// 	payOrder:[],//账单
+	// 	favorite:[],//收藏夹
+	// 	sex:String,//性别 1 男 2 女 0 其他
+	// 	birthday:String,//生日
+	// 	headImg:String,//头像 保存图片的地址
+	// 	name: String,//真实姓名
+	// 	ShippingAddress:[],//收货地址s
+	// });
+	// var shopCartSchema = new Schema({
+	// 	bookId: String,//书的id
+	// 	count: Number,//数量
+	// 	userId: String, //用户ID
+	// 	aprice: Number,//售价
+	// 	//sumMon: Number, //金额
+	// 	bookName: String,
+	// 	cover: String,
+	// })
+	// //暂时不用
+	// var logSchema = new Schema({
+	// 	id:String,
+	// 	phone:String,
+	// 	userName:String,
+	// 	lastTime:Date,
+	// });
+	// var baseInfoSchema = new Schema({
+	// 	sex:Number,//性别 1 男 2 女 0 其他
+	// 	birthday:String,//生日
+	// 	headImg:String,//头像 保存图片的地址
+	// 	name: String,//真实姓名
+	// 	ShippingAddress:[],//收货地址
+	// });
+	// var bookInfoSchema = new Schema({
+	// 	bookName:String,//书名
+	// 	author:String,//作者
+	// 	pubHouse:String,//出版社
+	// 	pubDate:String,//出版时间
+	// 	comment:[],//评论 存放评论的id
+	// 	price: Number,//定价
+	// 	discount: Number,//折扣
+	// 	aprice: Number,//售价
+	// 	cover:String,//封面 保存 照片位置
+	// 	picture:[],//书籍的图片
+	// 	editions:String,//版次
+	// 	pages:Number,
+	// 	words:Number,
+	// 	type:String,//分类
+	// 	authorIntro:[],//作者简介
+	// 	stocks:Number,//库存
+	// 	saleNumber:Number,//销售量，
+	// 	prestocks: Number,//进货量,
+	// 	introduce:[],//简介，
+	// 	scores:Number,//评分
+	// 	flag: String,//书籍的状态
+	// 	favorite: [],
+	// 	evaluation:[],//评介　
+	// });
+	// //折扣书籍
+	// var bookOnSaleSchema = new Schema ({
+	// 	bookName:String,//书名
+	// 	author:String,//作者
+	// 	price: Number,//定价
+	// 	discount: Number,//折扣
+	// 	aprice: Number,
+	// 	cover:String,//封面 保存 照片位置
+	// 	detail: String,
+	// });
+	// //新书上架
+	// var bookNewSchema = new Schema ({
+	// 	bookName:String,//书名
+	// 	author:String,//作者
+	// 	price: Number,//定价
+	// 	discount: Number,//折扣
+	// 	aprice: Number,
+	// 	cover:String,//封面 保存 照片位置
+	// 	detail: String,
+	// });
+	// var bookClassSchema = new Schema({
+	// 	flag:String,//标志
+	// 	name:String,//分类的名字``
+	// 	children:[],
+	// });
+	// var favoriteSchema = new Schema({
+	// 	time: Date,
+	// 	bookId: String,
+	// 	userId: String,
+	// 	collectPrice: Number,//收藏夹
+	// 	aprice:Number, //此时的价格 bookInfo 数据库
+	// 	bookName: String,// bookInfo 数据库
+	// 	cover:String //bookInfo 数据库
+	// 	// flag 标志 bookInfo 降价 促销 缺货 正常
+	// });
+	// var orderSchema = new Schema({
+	// 	time: Date,//订单成交时间
+	//   aprice: Number,
+	// 	cover: String,
+	// 	bookName: String,
+	// 	sumMon: Number, //实际金额
+	// 	userId: String, //用户id
+	//   address: String,//收货地址
+	//   orderStatus: String,//unpaied paided/unsend send/unrecive recive
+	// 	bookId: String,
+	// 	count: Number,
+	// });
+	// var saleRecordsSchema = new Schema({
+	// 	bookId: String,
+	// 	userId: String,
+	// 	count: Number,
+	// 	orderId: String,
+	// 	salePrice: Number,
+	// 	sumMon: Number,
+	// });
+	// var promBookSchema = new Schema({
+	// 	bookId: String,
+	// })
+	// var bookMenuSchema = new Schema({
+	// 	flag: String,
+	// 	name: String,
+	// 	children: [],
+	// });
+	// var bookMenuConfigSchema = new Schema({
+	// 	type: String,
+	// 	name: String,
+	// })
+	// userSchema.statics.findUserById = findItemById({errorCode:404405,message:"未找到相关的用户"});
+	// bookInfoSchema.statics.findBookById = findItemById({errorCode:404406,message:"未找到相关的书籍"});
+	// bookInfoSchema.statics.findByIdList = findItemsByList({errorCode:404602,message:"未找到相关的书籍信息"})
+	// shopCartSchema.statics.findByIdList = findItemsByList({errorCode:404601,message:"未找到该用户购物车的信息"})
+	// bookInfoSchema.statics.findItemsByList = findItemsByList({errorCode:404406,message:"未找到相关的书籍"})
+	// favoriteSchema.statics.findFavoriteById = findItemById({errorCode:404407,message:"未找到相关的收藏夹"});
+	// favoriteSchema.statics.createFavorite = createItem({errorCode:405401,message:"操作收藏夹失败"});
+	// favoriteSchema.statics.hasRecords = dbHasRecords();
+	// favoriteSchema.statics.findItems = findItems({errorCode:404600,message:'未找到相关收藏'});
+	// orderSchema.statics.createItem = createItem({errorCode:404700,message:'创建订单失败'})
+	// orderSchema.statics.findItems = findItems({errorCode:404700,message:'查找订单失败'})
+	// orderSchema.statics.findItemById = findItemById({errorCode:404701,message:'查找订单失败'})
+	// orderSchema.statics.findItemsByList = findItemsByList({errorCode: 404101, message:'订单查找失败'})
+	// saleRecordsSchema.statics.createItem = createItem({errorCode:404702,message:'支付失败'})
 	// function useUpdate (errorObj) {
 	// 	this.findOne(userId,)
 	// }
@@ -220,20 +224,21 @@ db.once('open', function (callback) {
 			})
 		}
 	}
-	dataModel["users"] = db.model('users',userSchema,'users');
-	dataModel["baseInfo"] = db.model('baseInfo',baseInfoSchema,'baseInfo');
-	dataModel["logs"] = db.model('logs',logSchema);
-	dataModel["bookInfo"] = db.model('bookInfo',bookInfoSchema,'bookInfo');
-	dataModel['bookClass'] = db.model('bookClass', bookClassSchema, 'bookClass');
-	dataModel['bookOnSale'] = db.model('bookOnSale', bookOnSaleSchema, 'bookOnSale');
-	dataModel['bookNew'] = db.model('bookNew', bookNewSchema, 'bookNew');
-	dataModel['shopCart'] = db.model('shopCart', shopCartSchema, 'shopCart');
-	dataModel['favorite'] = db.model('favorite', favoriteSchema, 'favorite');
-	dataModel['order'] = db.model('order', orderSchema, 'order');
-	dataModel['saleRecords'] = db.model('saleRecords', saleRecordsSchema, 'saleRecords');
-	dataModel['bookMenu'] = db.model('bookMen', bookMenuSchema, 'bookMen');
-	dataModel['bookMenuConfig'] = db.model('bookMenuConfig', bookMenuConfigSchema, 'bookMenuConfig');
-	dataModel['promBook'] = db.model('promBook', promBookSchema, 'promBook');
+	dataModel['account'] = db.model('account', accountSchema, 'account');
+	// dataModel["users"] = db.model('users',userSchema,'users');
+	// dataModel["baseInfo"] = db.model('baseInfo',baseInfoSchema,'baseInfo');
+	// dataModel["logs"] = db.model('logs',logSchema);
+	// dataModel["bookInfo"] = db.model('bookInfo',bookInfoSchema,'bookInfo');
+	// dataModel['bookClass'] = db.model('bookClass', bookClassSchema, 'bookClass');
+	// dataModel['bookOnSale'] = db.model('bookOnSale', bookOnSaleSchema, 'bookOnSale');
+	// dataModel['bookNew'] = db.model('bookNew', bookNewSchema, 'bookNew');
+	// dataModel['shopCart'] = db.model('shopCart', shopCartSchema, 'shopCart');
+	// dataModel['favorite'] = db.model('favorite', favoriteSchema, 'favorite');
+	// dataModel['order'] = db.model('order', orderSchema, 'order');
+	// dataModel['saleRecords'] = db.model('saleRecords', saleRecordsSchema, 'saleRecords');
+	// dataModel['bookMenu'] = db.model('bookMen', bookMenuSchema, 'bookMen');
+	// dataModel['bookMenuConfig'] = db.model('bookMenuConfig', bookMenuConfigSchema, 'bookMenuConfig');
+	// dataModel['promBook'] = db.model('promBook', promBookSchema, 'promBook');
 	var obj = {
 		bookName:"javascript权威指南",
 		author:"朴灵",
@@ -474,15 +479,22 @@ db.once('open', function (callback) {
 						   {bookId: '571b8c73bef9aa9b419a1c6f'},
 						   {bookId: '571b8c4ed2fd2e8741943588'},
 						   {bookId: '571b8c4d0ae1847d41b495cd'},]
+	var account = {
+		userName: 'wanlijun',
+		password: '123456',
+	}
+	/* dataModel['account'].create(account,function(err,data){
+		if(err) return console.error(err);
+	})*/
 	// dataModel['bookMenu'].create(bookMenu, function(err,data){
 	// 	console.log(data);
 	// })
 	// dataModel['promBook'].create(promBookIdList,function(err, data){
 	// 	console.log(data)
 	// })
-	 dataModel['bookInfo'].create(obj,function(err,data){
-		if(err) return console.error(err);
-	})
+	//  dataModel['bookInfo'].create(obj,function(err,data){
+	// 	if(err) return console.error(err);
+	// })
 	var bookMenuConfigObj = [
 		{
 			type: 'A',

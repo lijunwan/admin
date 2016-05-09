@@ -16,12 +16,12 @@ export default class Login extends Component {
 	    super(props);
 	    this.state={
 	    	formValue:{
-	    		phone:"",
+	    		userName:"",
 	    		password:"",
 	    	},
 				message:[],
 				isPass:{
-					phone:false,
+					userName:false,
 					password:false,
 				},
 				isSubmit:false,
@@ -44,12 +44,12 @@ export default class Login extends Component {
     	}
     	loginIn(e){
 				e.preventDefault();
-				if(!this.state.isPass.password && !this.state.isPass.phone){
+				if(!this.state.isPass.password && !this.state.isPass.userName){
 					var message=["","用户名和密码不能为空"]
 					this.setState({
 						message:__.assign({},this.state.message,message)
 					})
-				}else if(!this.state.formValue.phone){
+				}else if(!this.state.formValue.userName){
 					var message=["用户名不能为空",""]
 					this.setState({
 						message:__assign({},this.state.message,message)
@@ -106,16 +106,13 @@ export default class Login extends Component {
 							</ul>
 						</div>
 						<div className="Login-box">
-								<div className="Login-box-ad">
-									<img src={adImg} />
-								</div>
 			    			<form className="Login-box-form">
-			    				<p className="Login-box-title">账户登录</p>
+			    				<p className="Login-box-title">管理员登录</p>
 									<div className="Login-box-input">
 									<i className="fa fa-user"></i>
-			    				<input id="phone"
+			    				<input id="userName"
 			    						type="text"
-								    	placeholder="手机号"
+								    	placeholder="用户名"
 											value = {this.state.formValue.auth}
 											onChange={this.onChange.bind(this)}/><br/>
 									</div>
@@ -137,14 +134,6 @@ export default class Login extends Component {
 										{this.state.isSubmit?<i className="fa fa-spinner fa-spin"></i>:""}
 									</div>
 									<br/>
-			    				<p className="Login-box-linkregister"><Link to="/register">立即注册</Link></p>
-									<div className="Login-box-partner">
-										<p>合作伙伴</p>
-										<i className="Login-box-icon qq"></i>
-										<i className="Login-box-icon weixin"></i>
-										<i className="Login-box-icon weibo"></i>
-										<i className="Login-box-icon pay"></i>
-									</div>
 			    			</form>
 	    			</div>
     			</div>

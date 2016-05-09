@@ -54,16 +54,16 @@ app.get("/*",function(req,res){
      })
 })
     //每分钟扫描订单
-    var rule = new schedule.RecurrenceRule();
-    var times = [];
-    for(var i=1;i<60;i++) {
-    	times.push(i);
-    }
-    rule.minute = times;
-    var c = 0;
-    schedule.scheduleJob(rule, function(){
-        Order.filterOrder();
-    })
+    // var rule = new schedule.RecurrenceRule();
+    // var times = [];
+    // for(var i=1;i<60;i++) {
+    // 	times.push(i);
+    // }
+    // rule.minute = times;
+    // var c = 0;
+    // schedule.scheduleJob(rule, function(){
+    //     Order.filterOrder();
+    // })
 // 404错误处理
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
@@ -93,10 +93,10 @@ var options = {
   cert:fs.readFileSync(path.join(__dirname, 'ssh/key-cert.pem'),'utf8'),
 }
 var httpsServer = https.createServer(options, app);
-    httpsServer.listen(5001,function(){
+    httpsServer.listen(8001,function(){
       console.log('Example app listening at https://%s:%s', 5001, 5001)
     })
-var server = app.listen(5000,function(){
+var server = app.listen(8000,function(){
   var host = server.address().address;
   var port = server.address().port;
   console.log(path.join(__dirname, '../dist'))
