@@ -1,0 +1,23 @@
+.trash {
+  background-color: rgba(0, 0, 0, 0.61);
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  padding: 5px;
+  color: #fff;
+  display: none;;
+}
+.trash:hover{
+  background-color: #ff2832;
+  color: #fff;
+}
+.favoriteItem:hover .trash {
+  display: inline-block;
+}
+.bookName:hover {
+    color: #fa5000;
+    text-decoration: underline;
+}
+.bookName {
+  color: #3c3c3c;
+}

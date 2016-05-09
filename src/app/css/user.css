@@ -1,0 +1,168 @@
+.User{
+
+}
+.User-menu {
+
+}
+.User-head-wrap {
+  padding: 15px 15px 0;
+}
+.User-head {
+  width: 100px;
+  height: 100px;
+  padding: 10px;
+  background-color: #fff;
+  margin-bottom: 10px;
+}
+.User-head img{
+  width: 80px;
+  height: 80px;
+}
+.User-menu h2{
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 28px;
+  color: #555;
+  padding-left: 15px;
+}
+.User-menu ul li {
+  height: 28px;
+  line-height: 28px;
+  padding-left: 15px;
+}
+.User-menu ul li:hover {
+  cursor: pointer;
+  background-color: #e6e6e6;
+}
+.User-content {
+  background-color: #fff;
+  padding: 20px 0;
+}
+.User-container {
+  border: 1px solid #d7d7d7;
+}
+.BaseInfo-headImg {
+  width: 80px;
+  height: 80px;
+  border: 3px solid #e6e6e6;
+  margin-right: 10px;
+}
+.BaseInfo h2, .Account h2, .Address h2{
+  color: #666;
+  font-weight: 700;
+  border-bottom: 1px solid #D1D1D1;
+  padding: 5px 10px 4px;
+  font-size: 12px;
+  margin-bottom: 20px;
+}
+.BaseInfo-content {
+  padding-left: 15px;
+}
+.BaseInfo-content-row {
+  line-height: 25px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+.Upload-card i :hover {
+  cursor: pointer;
+}
+.Upload-card i {
+  font-size: 28px;
+  color: #999;
+  position: absolute;
+  left: 50%;
+  top: 15px;
+  margin-left: -14px;
+}
+.Upload-card p {
+  color: #999;
+  position: absolute;
+  bottom: 10px;
+  width: 80px;
+  color: #666;
+}
+.ant-upload-select-picture-card .ant-upload-text {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #666;
+}
+.ant-upload.ant-upload-select-picture-card {
+  width: 80px;
+  height: 80px;
+}
+.Upload-card {
+  border: 1px dashed #d9d9d9;
+  width: 80px;
+  height: 80px;
+  padding: 24px 0;
+  border-radius: 6px;
+  background-color: #fbfbfb;
+  text-align: center;
+  cursor: pointer;
+  -webkit-transition: border-color .3s ease;
+  transition: border-color .3s ease;
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  position: relative;
+}
+.Upload-card input {
+  height: 46px;
+  width: 80px;
+  opacity: 0;
+}
+.Upload-card input:hover{
+  cursor: pointer;
+}
+.BaseInfo-save,.Account-save, .Address-save{
+  background-position: 100% -320px;
+  border: 0 none;
+  color: #fff;
+  cursor: pointer;
+  display: block;
+  line-height: 22px;
+  padding: 0 11px;
+  background-color: #EA1616;
+  width: 50px;
+  text-align: center;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+.Account-input {
+  width: 200px;
+}
+.Account-mess:before {
+  display: inline-block;
+  margin-right: 4px;
+  content: "*";
+  font-family: SimSun;
+  font-size: 12px;
+  color: #f50;
+}
+.Account-save{
+  margin-left: 45px;
+}
+.Address h3 {
+    color: #666;
+    font-weight: 700;
+    padding: 5px 10px 4px;
+    font-size: 12px;
+    margin-bottom: 20px;
+}
+.Address .row {
+    margin-bottom: 10px;
+}
+.Address-save {
+    margin-left: 10px;
+    margin-bottom: 20px;
+}
+.Address-table {
+  width: 380px;
+}
+.Address .ant-table {
+    margin-left: 10px;
+}
+.Address .ant-table td,.Address .ant-table th {
+    width: 150px;
+}
