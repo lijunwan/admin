@@ -29,7 +29,8 @@ export default class Login extends Component {
     }
   	componentWillReceiveProps(nextProps){
   		if(nextProps && nextProps.client){
-    		if(nextProps && nextProps.client.toJS().info.id != undefined){
+				console.log(nextProps && nextProps.client.toJS().info.userName, '????')
+    		if(nextProps && nextProps.client.toJS().info.userName != undefined){
 					this.props.history.pushState('null','/index');
     		}
 			else if(__.has(nextProps.client.toJS().info,"errorCode")){

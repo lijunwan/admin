@@ -483,9 +483,9 @@ db.once('open', function (callback) {
 		userName: 'wanlijun',
 		password: '123456',
 	}
-	/* dataModel['account'].create(account,function(err,data){
-		if(err) return console.error(err);
-	})*/
+	// dataModel['account'].create(account,function(err,data){
+	// 	if(err) return console.error(err);
+	// })
 	// dataModel['bookMenu'].create(bookMenu, function(err,data){
 	// 	console.log(data);
 	// })

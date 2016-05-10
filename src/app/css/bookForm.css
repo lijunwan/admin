@@ -1,0 +1,13 @@
+.bookForm .row{
+  margin-bottom: 10px;
+}
+.breadcrumb {
+  margin: 20px 0;
+}
+.form {
+  margin-top: 50px;
+}
+.formKey {
+  text-align: right;
+  margin-right: 10px;
+}
