@@ -21,3 +21,11 @@
   font-size: 12px;
   color: #666;
 }
+.BookForm-button {
+  padding: 5px 10px;
+  background: #067AB6;
+  color: #fff;
+  border-radius: 5px;
+  border: none;
+  margin: 10px 100px;
+}
