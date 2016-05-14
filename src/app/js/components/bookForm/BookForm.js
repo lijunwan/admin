@@ -1,11 +1,34 @@
 import React, { Component, PropTypes } from 'react';
-import { Breadcrumb,Row,Col,Upload,Icon} from 'antd';
+import { Breadcrumb,Row,Col,Icon} from 'antd';
 import '../../../css/bookForm.css';
+import Upload from '../common/Upload.js'
 export default class BookForm extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      coverFileList:[{
+        uid:-1,
+        name: 'cover.png',
+        status: 'done',
+      }],
+    }
+  }
+  handleChangeCover(info) {
+    let fileList = info.fileList;
+    fileList = fileList.slice(-2);
+    fileList = fileList.map((file)=>{
+      if(file.response) {
+        file.url = file.response.url;
+      }
+      return file;
+    })
   }
   render() {
+    const coverProps = {
+      action: '/api/book/uploadCover',
+      onChange: this.handleChangeCover,
+      listType: "picture-card",
+    }
     return(
       <div className="bookForm">
         <div className="breadcrumb">
@@ -18,8 +41,8 @@ export default class BookForm extends Component {
               <Col span="2">
                 <div className="formKey">封面</div>
               </Col>
-              <Col span="8">
-                <Upload>
+              <Col span="10">
+                <Upload {...coverProps} count="1">
                   <Icon type="plus" />
                   <div className="ant-upload-text">上传照片</div>
                 </Upload>
@@ -29,8 +52,8 @@ export default class BookForm extends Component {
               <Col span="2">
                 <div className="formKey">图片</div>
               </Col>
-              <Col span="8">
-                <Upload>
+              <Col span="10">
+                <Upload listType="picture-card" count="4">
                   <Icon type="plus" />
                   <div className="ant-upload-text">上传照片</div>
                 </Upload>

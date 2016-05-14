@@ -1,41 +1,69 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes} from 'react';
 import {Icon} from 'antd';
+import '../../../css/common/upload.css';
 var uploadInput, upLoadForm;
 export default class  Upload extends Component {
-  previewFile(e) {
-    console.log(uploadInput.files[0],'123');
-    var file = uploadInput.files[0];
-    var reader = new FileReader();
-    reader.addEventListener("load",()=>{
-       this.props.onChange(reader.result);
-    }, false);
-    if(file) {
-      reader.readAsDataURL(file);
+  constructor(props) {
+    super(props);
+    this.state = {
+      fileList:[],
+      preImg: [],
+      imgList: [],
     }
+  }
+  previewFile(e) {
+    let fileList = this.state.fileList.slice(0);
+    const file = e.target.files;
+    fileList.push(e.target.files);
+    const list = this.state.imgList.slice(0);
+    let reader = new FileReader();
+    if(file) {
+      reader.readAsDataURL(file[0]);
+    }
+    const that = this;
+    reader.addEventListener("load",()=>{
+        list.push(
+        <img className="ant-upload-list-item" key={list.length} src={reader.result} />
+      )
+      if(this.props.count) {
+          let count = parseInt(this.props.count);
+          that.setState({
+          imgList: list.slice(-count),
+          fileList: fileList.slice(-count),
+        })
+      }
+    }, false);
+    // console.log(uploadInput.files)
+    // var file = uploadInput.files[0];
+    // var reader = new FileReader();
+    // reader.addEventListener("load",()=>{
+    //    this.props.onChange(reader.result);
+    // }, false);
+    // if(file) {
+    //   reader.readAsDataURL(file);
     // console.log(upLoadForm.onClick);
     // upLoadForm.submit();
-    var xhr = new XMLHttpRequest();
-    var formData = new FormData();
+    // var xhr = new XMLHttpRequest();
+    // var formData = new FormData();
 
-    xhr.open("post", '/api/user/authorization/headImages', true);
-    formData.append('file',file);
-    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-    xhr.send(formData);
-  }
-  upload() {
-
-  }
-  componentDidMount() {
-    uploadInput = document.getElementById('upload');
-    upLoadForm = document.getElementById('upForm');
-    console.log(uploadInput);
+    // xhr.open("post", '/api/user/authorization/headImages', true);
+    // formData.append('file',file);
+    // xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    // xhr.send(formData);
+    // }
   }
   render() {
+    console.log(this.state.imgList, '???--');
     return(
-      <div className="Upload-card">
-        <Icon type="plus" />
-        <p>修改头像</p>
-        <input id="upload" type="file"  onChange={this.previewFile.bind(this)}/>
+      <div>
+        <div className="Upload-item">
+         {this.state.imgList}
+        </div>
+        <div className="Upload-card">
+          <Icon type="plus" />
+          <p>上传照片</p>
+          <input id={this.props.id} type="file"  onChange={this.previewFile.bind(this)}/>
+        </div>
       </div>
     )
   }
