@@ -1,6 +1,7 @@
 import React, { Component, PropTypes} from 'react';
 import {Icon} from 'antd';
 import '../../../css/common/upload.css';
+import __remove from 'lodash/remove';
 var uploadInput, upLoadForm;
 export default class  Upload extends Component {
   constructor(props) {
@@ -10,6 +11,18 @@ export default class  Upload extends Component {
       preImg: [],
       imgList: [],
     }
+  }
+  delImg(index) {
+    let fileList = this.state.fileList.slice(0);
+    let imgList = __remove(this.state.imgList, function(n,idx) {
+       console.log(index ,idx,'index')
+      return idx !== index;
+    });
+    console.log(imgList, '---')
+    this.setState({
+      imgList: imgList,
+    })
+
   }
   previewFile(e) {
     let fileList = this.state.fileList.slice(0);
@@ -23,7 +36,14 @@ export default class  Upload extends Component {
     const that = this;
     reader.addEventListener("load",()=>{
         list.push(
-        <img className="ant-upload-list-item" key={list.length} src={reader.result} />
+        <div className="Upload-img-wrap" key={list.length}>
+          <img className="Upload-list-item" src={reader.result} />
+          <div className="Upload-img-cover">
+            <div className="Upload-img-modal">
+              <i className="anticon anticon-delete Upload-delete" onClick={this.delImg.bind(this, list.length)}></i>
+            </div>
+          </div>
+        </div>
       )
       if(this.props.count) {
           let count = parseInt(this.props.count);

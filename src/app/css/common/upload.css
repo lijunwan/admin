@@ -41,14 +41,50 @@
 .Upload-card input:hover{
   cursor: pointer;
 }
-.ant-upload-list-item {
-    display: inline-block;
-    width: 96px;
-    height: 96px;
-    margin: 0 8px 8px 0;
-    border: 1px solid #d9d9d9;
-    padding: 8px;
+.Upload-list-item {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
 }
 .Upload-item , .Upload-card {
   float: left;
+}
+.Upload-img-wrap {
+  position: relative;
+  padding: 8px;
+  width: 96px;
+  height: 96px;
+  margin: 0 8px 8px 0;
+  border: 1px solid #d9d9d9;
+  padding: 8px;
+  float: left;
+}
+.Upload-img-wrap:hover .Upload-img-modal {
+  display: block;
+}
+.Upload-img-cover {
+  position: absolute;
+  top:0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 8px;
+}
+.Upload-img-modal{
+  background-color: rgba(0,0,0,.5);
+  width: 100%;
+  height: 100%;
+  display: none;
+}
+.Upload-delete {
+  color: #CCc;
+  font-size: 16px;
+  position: absolute;
+  top: 50%;
+  margin-top: -8px;
+  left: 50%;
+  margin-left: -8px;
+}
+.Upload-delete:hover{
+  color: #067AB6;
 }
