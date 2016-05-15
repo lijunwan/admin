@@ -1,16 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import { Breadcrumb,Row,Col,Icon,DatePicker,Select,Checkbox,Cascader} from 'antd';
 import '../../../css/bookForm.css';
-import Upload from '../common/Upload.js'
+import Upload from '../common/Upload.js';
+import __assign from 'lodash/assign';
 export default class BookForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      coverFileList:[{
-        uid:-1,
-        name: 'cover.png',
-        status: 'done',
-      }],
       formValue: {
          bookName:'',
          author:'',//作者
@@ -30,8 +26,59 @@ export default class BookForm extends Component {
          prestocks: '',//进货量,
          introduce:[],//简介，
       },
-      isDisable: false,
+      isDisable: true,
+      coverFileList: [],
+      pictureList: [],
+      priceParams:{
+        yuan: 0,
+        jiao: 0,
+        fen: 0,
+      },
+      discount: {
+        shi: 9,
+        ge: 9,
+      }
     }
+  }
+  changePrice(event) {
+    let priceParams = __assign({}, this.state.priceParams);
+    if(event.target.id == 'jiao' || event.target.id == 'fen') {
+      if(event.target.value <10) {
+        priceParams[event.target.id] = event.target.value;
+        this.setState({
+        priceParams: priceParams,
+      });
+      }
+    } else {
+      priceParams[event.target.id] = event.target.value;
+      this.setState({
+        priceParams: priceParams,
+      });
+    }
+    if(this.state.isDisable) {
+      let aprice = priceParams.yuan + '.' + priceParams.jiao + priceParams.fen;
+      let formValue = __assign({}, this.state.formValue);
+      formValue.aprice = aprice;
+      this.setState({
+        formValue: formValue,
+      })
+    } else {
+      let price = priceParams.yuan + '.' + priceParams.jiao + priceParams.fen;
+      let discount = this.state.discount.shi + '.' + this.state.discount.ge;
+      let aprice = (discount * 0.1* price).toFixed(2);
+       let formValue = __assign({}, this.state.formValue);
+       formValue.aprice = aprice;
+        this.setState({
+          formValue: formValue,
+        })
+    }
+  }
+  changeDiscount(event) {
+    let discount = this.state.discount;
+    discount[event.target.id] = event.target.value;
+    this.setState({
+      discount: discount,
+    })
   }
   handleChangeCover(info) {
     let fileList = info.fileList;
@@ -58,12 +105,36 @@ export default class BookForm extends Component {
     if(this.props.book.toJS().bookMenu.data) {
       let bookMenu = this.props.book.toJS().bookMenu.data;
        return(
-         <Cascader options={bookMenu} />
+         <Cascader options={bookMenu} onChange={this.bookTypeChange.bind(this)}/>
       )
     }
   }
+  bookTypeChange(value) {
+    let formValue = __assign({}, this.state.formValue);
+    formValue.type = value[2];
+    this.setState({
+      formValue: formValue,
+    })
+  }
   componentDidMount() {
     this.props.bookeBoundAC.getBookType();
+  }
+  textChange(event) {
+    let formValue = __assign({}, this.state.formValue);
+    formValue[event.target.id] = event.target.value;
+    this.setState({
+      formValue: formValue,
+    })
+  }
+  changeCover(fileList) {
+    this.setState({
+      coverFileList: fileList,
+    })
+  }
+  changePicture(fileList) {
+    this.setState({
+      pictureList: fileList,
+    })
   }
   render() {
     const coverProps = {
@@ -84,9 +155,7 @@ export default class BookForm extends Component {
                 <div className="formKey">封面(１张)</div>
               </Col>
               <Col span="20">
-                <Upload {...coverProps} count="1">
-                  <Icon type="plus" />
-                  <div className="ant-upload-text">上传照片</div>
+                <Upload {...coverProps} count="1" fileList={this.state.coverFileList} changeState={this.changeCover.bind(this)}>
                 </Upload>
               </Col>
             </Row>
@@ -95,9 +164,7 @@ export default class BookForm extends Component {
                 <div className="formKey">图片(4张)</div>
               </Col>
               <Col span="20">
-                <Upload listType="picture-card" count="4">
-                  <Icon type="plus" />
-                  <div className="ant-upload-text">上传照片</div>
+                <Upload listType="picture-card" count="4" fileList={this.state.pictureList} changeState={this.changePicture.bind(this)}>
                 </Upload>
               </Col>
             </Row>
@@ -106,7 +173,11 @@ export default class BookForm extends Component {
                 <div className="formKey">书名</div>
               </Col>
               <Col span="8">
-                <input className="ant-input" type="text"></input>
+                <input className="ant-input" 
+                       type="text" 
+                       id="bookName" 
+                       value={this.state.formValue.bookName}
+                       onChange={this.textChange.bind(this)}></input>
               </Col>
             </Row>
             <Row>
@@ -122,7 +193,11 @@ export default class BookForm extends Component {
                 <div className="formKey">作者</div>
               </Col>
               <Col span="8">
-                  <input className="ant-input" type="text"></input>
+                  <input className="ant-input" 
+                         type="text"
+                         id="author"
+                         value={this.state.formValue.author}
+                         onChange={this.textChange.bind(this)}></input>
               </Col>
             </Row>
             <Row>
@@ -130,18 +205,37 @@ export default class BookForm extends Component {
                 <div className="formKey">定价</div>
               </Col>
               <Col span="6">
-                <input type="number" className="ant-input" style={{width: '80px'}} />
+                <input type="number" 
+                       className="ant-input" 
+                       style={{width: '80px'}} 
+                       id="yuan"
+                       value={this.state.priceParams.yuan}
+                       onChange={this.changePrice.bind(this)}/>
                 元
-                <input type="number" className="ant-input" style={{width: '50px'}} 　min="0" min="9"/>
+                <input type="number" 
+                       className="ant-input" 
+                       style={{width: '50px'}} 
+                       min="0" 
+                       max="9"
+                       id="jiao"
+                       value={this.state.priceParams.jiao}
+                       onChange={this.changePrice.bind(this)}/>
                 角
-                <input type="number" className="ant-input" style={{width: '50px'}}  min="0" min="9"/>
+                <input type="number" 
+                       className="ant-input" 
+                       style={{width: '50px'}}  
+                       min="0" 
+                       max="9"
+                       id="fen"
+                       value={this.state.priceParams.fen}
+                       onChange={this.changePrice.bind(this)}/>
                 分
               </Col>
               <Col span="2">
                 <div className="formKey">折扣</div>
               </Col>
               <Col span="4">
-                 <Select defaultValue="9" disabled={this.state.isDisable}>
+                 <Select defaultValue="9" disabled={this.state.isDisable} id="shi" value={this.state.discount.shi} onChange={this.changeDiscount.bind(this)}>
                     <Option value="9">9</Option>
                     <Option value="8">8</Option>
                     <Option value="7">7</Option>
@@ -153,7 +247,7 @@ export default class BookForm extends Component {
                     <Option value="1">1</Option>
                 </Select>
                 <span style={{margin: '0 5px'}}>.</span>
-                 <Select defaultValue="9" disabled={this.state.isDisable}>
+                 <Select defaultValue="9" disabled={this.state.isDisable} id="ge" value={this.state.discount.ge} onChange={this.changeDiscount.bind(this)}>
                     <Option value="9">9</Option>
                     <Option value="8">8</Option>
                     <Option value="7">7</Option>
@@ -166,15 +260,15 @@ export default class BookForm extends Component {
                 </Select>
                 折
               </Col>
-              <Col span="4">
-                <Checkbox onChange={this.checkBoxHandle.bind(this)}/>
+              <Col span="2">
+                <Checkbox onChange={this.checkBoxHandle.bind(this)} defaultChecked={1===1}/>
                 <span style={{margin: '0 5px'}}>无折扣</span>
               </Col>
               <Col span="2">
                 <div className="formKey">售价</div>
               </Col>
               <Col span="4">
-
+                <span>{this.state.formValue.aprice}</span>
               </Col>
             </Row>
             <Row>
@@ -182,7 +276,11 @@ export default class BookForm extends Component {
                 <div className="formKey">出版社</div>
               </Col>
               <Col span="6">
-                <input className="ant-input" type="text"></input>
+                <input className="ant-input" 
+                       type="text"
+                       id="pubHouse"
+                       value={this.state.formValue.pubHouse}
+                       onChange={this.textChange.bind(this)}></input>
               </Col>
             </Row>
             <Row>
@@ -198,19 +296,34 @@ export default class BookForm extends Component {
                 <div className="formKey">版次</div>
               </Col>
               <Col span="2">
-                <input type="number" className="ant-input" style={{width: '80px'}} />
+                <input type="number" 
+                       className="ant-input" 
+                       style={{width: '80px'}}
+                       id="editions"
+                       value={this.state.formValue.editions}
+                       onChange={this.textChange.bind(this)}/>
               </Col>
               <Col span="2">
                 <div className="formKey">页数</div>
               </Col>
               <Col span="2">
-                 <input type="number" className="ant-input" style={{width: '80px'}} />
+                 <input type="number" 
+                        className="ant-input" 
+                        style={{width: '80px'}} 
+                        id="pages"
+                        value={this.state.formValue.pages}
+                        onChange={this.textChange.bind(this)}/>
               </Col>
               <Col span="2">
                 <div className="formKey">字数</div>
               </Col>
               <Col span="2">
-                 <input type="number" className="ant-input" style={{width: '80px'}} />
+                 <input type="number" 
+                        className="ant-input" 
+                        style={{width: '80px'}} 
+                        id="words"
+                        value={this.state.formValue.words}
+                        onChange={this.textChange.bind(this)}/>
               </Col>
             </Row>
             <Row>
@@ -218,7 +331,12 @@ export default class BookForm extends Component {
                 <div className="formKey">库存</div>
               </Col>
               <Col span="4">
-                <input type="number" className="ant-input" style={{width: '80px'}} />
+                <input type="number" 
+                       className="ant-input" 
+                       style={{width: '80px'}} 
+                       id="prestocks"
+                       value={this.state.prestocks}
+                       onChange={this.textChange.bind(this)}/>
               </Col>
             </Row>
             <Row>
@@ -226,7 +344,8 @@ export default class BookForm extends Component {
                 <div className="formKey">作者简介</div>
               </Col>
               <Col span="8">
-                <textarea className="ant-input" />
+                <textarea className="ant-input" 
+                          id="authorIntro" />
               </Col>
             </Row>
             <Row>

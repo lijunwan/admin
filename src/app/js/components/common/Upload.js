@@ -7,25 +7,26 @@ export default class  Upload extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fileList:[],
       preImg: [],
       imgList: [],
     }
   }
   delImg(index) {
-    let fileList = this.state.fileList.slice(0);
+    let fileList = __remove(this.props.fileList, function(n,idx) {
+       console.log(index ,idx,'index')
+      return idx !== index;
+    });
     let imgList = __remove(this.state.imgList, function(n,idx) {
        console.log(index ,idx,'index')
       return idx !== index;
     });
-    console.log(imgList, '---')
     this.setState({
       imgList: imgList,
     })
-
+    this.props.changeState(fileList);
   }
   previewFile(e) {
-    let fileList = this.state.fileList.slice(0);
+    let fileList = this.props.fileList.slice(0);
     const file = e.target.files;
     fileList.push(e.target.files);
     const list = this.state.imgList.slice(0);
@@ -47,9 +48,9 @@ export default class  Upload extends Component {
       )
       if(this.props.count) {
           let count = parseInt(this.props.count);
+          this.props.changeState(fileList.slice(-count))
           that.setState({
           imgList: list.slice(-count),
-          fileList: fileList.slice(-count),
         })
       }
     }, false);
@@ -73,7 +74,6 @@ export default class  Upload extends Component {
     // }
   }
   render() {
-    console.log(this.state.imgList, '???--');
     return(
       <div>
         <div className="Upload-item">
