@@ -5,7 +5,7 @@ var connection = mongoose.connection;
 //var Db = mongodb.Db;
 //var Connection = mongodb.Connection;
 var Schema = mongoose.Schema;
-var db = mongoose.createConnection('localhost',"admin");
+var db = mongoose.createConnection('localhost',"bookstore");
 db.on('error',console.error.bind(console,'connection error'));
 var dataModel = {};
 db.once('open', function (callback) {
@@ -132,15 +132,15 @@ db.once('open', function (callback) {
 	// var promBookSchema = new Schema({
 	// 	bookId: String,
 	// })
-	// var bookMenuSchema = new Schema({
-	// 	flag: String,
-	// 	name: String,
-	// 	children: [],
-	// });
-	// var bookMenuConfigSchema = new Schema({
-	// 	type: String,
-	// 	name: String,
-	// })
+	var bookMenuSchema = new Schema({
+		value: String,
+		label: String,
+		children: [],
+	});
+	var bookMenuConfigSchema = new Schema({
+		type: String,
+		name: String,
+	})
 	// userSchema.statics.findUserById = findItemById({errorCode:404405,message:"未找到相关的用户"});
 	// bookInfoSchema.statics.findBookById = findItemById({errorCode:404406,message:"未找到相关的书籍"});
 	// bookInfoSchema.statics.findByIdList = findItemsByList({errorCode:404602,message:"未找到相关的书籍信息"})
@@ -236,7 +236,7 @@ db.once('open', function (callback) {
 	// dataModel['favorite'] = db.model('favorite', favoriteSchema, 'favorite');
 	// dataModel['order'] = db.model('order', orderSchema, 'order');
 	// dataModel['saleRecords'] = db.model('saleRecords', saleRecordsSchema, 'saleRecords');
-	// dataModel['bookMenu'] = db.model('bookMen', bookMenuSchema, 'bookMen');
+	dataModel['bookMenu'] = db.model('bookMen', bookMenuSchema, 'bookMen');
 	// dataModel['bookMenuConfig'] = db.model('bookMenuConfig', bookMenuConfigSchema, 'bookMenuConfig');
 	// dataModel['promBook'] = db.model('promBook', promBookSchema, 'promBook');
 	var obj = {
@@ -270,199 +270,199 @@ db.once('open', function (callback) {
 		detail: '5709b6499180abb00defee0a'
 	}
 	var bookMenu = {
-		flag:'A',
-		name:'教育',
+		value:'A',
+		label:'教育',
 		children:[
 			{
-				flag:'AA',
-				name:'教材',
+				value:'AA',
+				label:'教材',
 				children:[
 					{
-						flag:'AAA',
-						name:'研究生/本科'
+						value:'AAA',
+						label:'研究生/本科'
 					},
 					{
-						flag:'AAB',
-						name:'高职高专教材'
+						value:'AAB',
+						label:'高职高专教材'
 					},
 					{
-						flag: 'AAC',
-						name: '中职教材'
+						value: 'AAC',
+						label: '中职教材'
 					},
 					{
-						flag: 'AAD',
-						name: '成人教育教材'
+						value: 'AAD',
+						label: '成人教育教材'
 					},
 					{
-						flag: 'AAE',
-						name: '职业技术培训'
+						value: 'AAE',
+						label: '职业技术培训'
 					},
 					{
-						flag: 'AAF',
-						name: '公共课'
+						value: 'AAF',
+						label: '公共课'
 					},
 					{
-						flag: 'AAG',
-						name: '经济管理类'
+						value: 'AAG',
+						label: '经济管理类'
 					},
 					{
-						flag: 'AAH',
-						name: '工学类'
+						value: 'AAH',
+						label: '工学类'
 					},
 					{
-						flag: 'AAI',
-						name: '文法类'
+						value: 'AAI',
+						label: '文法类'
 					},
 					{
-						flag: 'AAJ',
-						name: '医学类'
+						value: 'AAJ',
+						label: '医学类'
 					},
 					{
-						flag: 'AAK',
-						name: '理学类'
+						value: 'AAK',
+						label: '理学类'
 					},
 					{
-						flag: 'AAI',
-						name: '农学'
+						value: 'AAI',
+						label: '农学'
 					},
 
 				]
 			},
 			{
-				flag:'AB',
-				name:'外语',
+				value:'AB',
+				label:'外语',
 				children:[
 					{
-						flag:'ABA',
-						name:'英语专项训练'
+						value:'ABA',
+						label:'英语专项训练'
 					},
 					{
-						flag:'ABB',
-						name:'英语读物'
+						value:'ABB',
+						label:'英语读物'
 					},
 					{
-						flag:'ABC',
-						name:'英语考试'
+						value:'ABC',
+						label:'英语考试'
 					},
 					{
-						flag:'ABD',
-						name:'小语种'
+						value:'ABD',
+						label:'小语种'
 					},
 					{
-						flag:'ABE',
-						name:'日语'
+						value:'ABE',
+						label:'日语'
 					},
 					{
-						flag:'ABF',
-						name:'法语'
+						value:'ABF',
+						label:'法语'
 					},
 					{
-						flag:'ABF',
-						name:'韩语'
+						value:'ABF',
+						label:'韩语'
 					},
 				]
 			},
 			{
-				flag: 'AC',
-				name: '考试',
+				value: 'AC',
+				label: '考试',
 				children:[
 					{
-						flag: 'ACA',
-						name: '学历考试',
+						value: 'ACA',
+						label: '学历考试',
 					},
 					{
-						flag: 'ACB',
-						name: '公务员',
+						value: 'ACB',
+						label: '公务员',
 					},
 					{
-						flag: 'ACC',
-						name: '财税外贸保险',
+						value: 'ACC',
+						label: '财税外贸保险',
 					},
 					{
-						flag: 'ACD',
-						name: '计算机',
+						value: 'ACD',
+						label: '计算机',
 					},
 					{
-						flag: 'ACE',
-						name: '建筑工程',
+						value: 'ACE',
+						label: '建筑工程',
 					},
 					{
-						flag: 'ACF',
-						name: '医药卫生',
+						value: 'ACF',
+						label: '医药卫生',
 					},
 					{
-						flag: 'ACG',
-						name: '艺术/体育',
+						value: 'ACG',
+						label: '艺术/体育',
 					},
 					{
-						flag: 'ACH',
-						name: '考研',
+						value: 'ACH',
+						label: '考研',
 					},
 					{
-						flag: 'ACI',
-						name: 'MBA/MPA/MPAc',
+						value: 'ACI',
+						label: 'MBA/MPA/MPAc',
 					},
 					{
-						flag: 'ACJ',
-						name: '会计',
+						value: 'ACJ',
+						label: '会计',
 					},
 					{
-						flag: 'ACK',
-						name: '建造师',
+						value: 'ACK',
+						label: '建造师',
 					},
 					{
-						flag: 'ACL',
-						name: '医师资格',
+						value: 'ACL',
+						label: '医师资格',
 					},
 					{
-						flag: 'ACM',
-						name: '人力资源管理',
+						value: 'ACM',
+						label: '人力资源管理',
 					},
 				]
 			},
 			{
-				flag: 'AD',
-				name: '中小学教辅',
+				value: 'AD',
+				label: '中小学教辅',
 				children: [
 					{
-						flag: 'ADA' ,
-						name: '小学' ,
+						value: 'ADA' ,
+						label: '小学' ,
 					},
 					{
-						flag: 'ADB' ,
-						name: '初中' ,
+						value: 'ADB' ,
+						label: '初中' ,
 					},
 					{
-						flag: 'ADC' ,
-						name: '高中' ,
+						value: 'ADC' ,
+						label: '高中' ,
 					},
 					{
-						flag: 'ADD' ,
-						name: '中小学阅读' ,
+						value: 'ADD' ,
+						label: '中小学阅读' ,
 					},
 					{
-						flag: 'ADE' ,
-						name: '英语专项' ,
+						value: 'ADE' ,
+						label: '英语专项' ,
 					},
 					{
-						flag: 'ADF' ,
-						name: '语文作文' ,
+						value: 'ADF' ,
+						label: '语文作文' ,
 					},
 					{
-						flag: 'ADG' ,
-						name: '工具书' ,
+						value: 'ADG' ,
+						label: '工具书' ,
 					},
 					{
-						flag: 'ADH' ,
-						name: '写字/字帖' ,
+						value: 'ADH' ,
+						label: '写字/字帖' ,
 					},
 					{
-						flag: 'ADI' ,
-						name: '学习方法' ,
+						value: 'ADI' ,
+						label: '学习方法' ,
 					},
 					{
-						flag: 'ADJ' ,
-						name: '教育理论' ,
+						value: 'ADJ' ,
+						label: '教育理论' ,
 					},
 				]
 			}

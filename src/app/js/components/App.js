@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as clientAC from '../actions/client';
-// import * as bookAC from '../actions/book';
+import * as bookAC from '../actions/book';
 // import * as orderAC from '../actions/order';
 import Router from 'react-router';
 import Header from '../components/common/Header';
@@ -47,7 +47,7 @@ export default class App extends Component{
 function mapStateToProps(state) {
   return {
       client: state.client,
-      // bookInfo: state.bookInfo,
+       book: state.book,
       // order: state.order,
   };
 }
@@ -55,7 +55,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
       return {
         clientBoundAC: bindActionCreators(clientAC, dispatch),
-        // bookeBoundAC: bindActionCreators(bookAC, dispatch),
+        bookeBoundAC: bindActionCreators(bookAC, dispatch),
         // orderBoundAC: bindActionCreators(orderAC, dispatch),
       }
 }

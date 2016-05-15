@@ -71,6 +71,7 @@ Books.getBookInfo = function getBookInfo (req, res) {
 }
 Books.getBookMenu = function(req, res) {
 	db['bookMenu'].find({},function(error, data){
+		console.log('---',error);
 		if(data){
 			res.send({data: data})
 		}
