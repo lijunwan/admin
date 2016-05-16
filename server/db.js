@@ -49,31 +49,31 @@ db.once('open', function (callback) {
 	// 	name: String,//真实姓名
 	// 	ShippingAddress:[],//收货地址
 	// });
-	// var bookInfoSchema = new Schema({
-	// 	bookName:String,//书名
-	// 	author:String,//作者
-	// 	pubHouse:String,//出版社
-	// 	pubDate:String,//出版时间
-	// 	comment:[],//评论 存放评论的id
-	// 	price: Number,//定价
-	// 	discount: Number,//折扣
-	// 	aprice: Number,//售价
-	// 	cover:String,//封面 保存 照片位置
-	// 	picture:[],//书籍的图片
-	// 	editions:String,//版次
-	// 	pages:Number,
-	// 	words:Number,
-	// 	type:String,//分类
-	// 	authorIntro:[],//作者简介
-	// 	stocks:Number,//库存
-	// 	saleNumber:Number,//销售量，
-	// 	prestocks: Number,//进货量,
-	// 	introduce:[],//简介，
-	// 	scores:Number,//评分
-	// 	flag: String,//书籍的状态
-	// 	favorite: [],
-	// 	evaluation:[],//评介　
-	// });
+	var bookInfoSchema = new Schema({
+		bookName:String,//书名
+		author:String,//作者
+		pubHouse:String,//出版社
+		pubDate:String,//出版时间
+		comment:[],//评论 存放评论的id
+		price: Number,//定价
+		discount: Number,//折扣
+		aprice: Number,//售价
+		cover:String,//封面 保存 照片位置
+		picture:[],//书籍的图片
+		editions:String,//版次
+		pages:Number,
+		words:Number,
+		type:String,//分类
+		authorIntro:[],//作者简介
+		stocks:Number,//库存
+		saleNumber:Number,//销售量，
+		prestocks: Number,//进货量,
+		introduce:[],//简介，
+		scores:Number,//评分
+		flag: String,//书籍的状态
+		favorite: [],
+		evaluation:[],//评介　
+	});
 	// //折扣书籍
 	// var bookOnSaleSchema = new Schema ({
 	// 	bookName:String,//书名
@@ -142,7 +142,7 @@ db.once('open', function (callback) {
 		name: String,
 	})
 	// userSchema.statics.findUserById = findItemById({errorCode:404405,message:"未找到相关的用户"});
-	// bookInfoSchema.statics.findBookById = findItemById({errorCode:404406,message:"未找到相关的书籍"});
+	//bookInfoSchema.statics.findBookById = findItemById({errorCode:404406,message:"未找到相关的书籍"});
 	// bookInfoSchema.statics.findByIdList = findItemsByList({errorCode:404602,message:"未找到相关的书籍信息"})
 	// shopCartSchema.statics.findByIdList = findItemsByList({errorCode:404601,message:"未找到该用户购物车的信息"})
 	// bookInfoSchema.statics.findItemsByList = findItemsByList({errorCode:404406,message:"未找到相关的书籍"})
@@ -228,7 +228,7 @@ db.once('open', function (callback) {
 	// dataModel["users"] = db.model('users',userSchema,'users');
 	// dataModel["baseInfo"] = db.model('baseInfo',baseInfoSchema,'baseInfo');
 	// dataModel["logs"] = db.model('logs',logSchema);
-	// dataModel["bookInfo"] = db.model('bookInfo',bookInfoSchema,'bookInfo');
+	dataModel["bookInfo"] = db.model('bookInfo',bookInfoSchema,'bookInfo');
 	// dataModel['bookClass'] = db.model('bookClass', bookClassSchema, 'bookClass');
 	// dataModel['bookOnSale'] = db.model('bookOnSale', bookOnSaleSchema, 'bookOnSale');
 	// dataModel['bookNew'] = db.model('bookNew', bookNewSchema, 'bookNew');

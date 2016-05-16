@@ -25,6 +25,13 @@ export default class  Upload extends Component {
     })
     this.props.changeState(fileList);
   }
+  componentWillReceiveProps(nextProps){
+      if(nextProps.fileList.length===0){
+        this.setState({
+            imgList: [],
+        })
+      }
+    }
   previewFile(e) {
     let fileList = this.props.fileList.slice(0);
     const file = e.target.files;

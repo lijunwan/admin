@@ -1,9 +1,21 @@
 import React, { Component, PropTypes } from 'react';
-import { Breadcrumb,Row,Col,Icon,DatePicker,Select,Checkbox,Cascader, message} from 'antd';
+import { Breadcrumb,
+         Row,
+         Col,
+         Icon,
+         DatePicker,
+         Select,
+         Checkbox,
+         Cascader,
+         message,
+         Radio,
+         Modal} from 'antd';
+const confirm = Modal.confirm;
 import '../../../css/bookForm.css';
 import Upload from '../common/Upload.js';
 import __assign from 'lodash/assign';
 import __keys from 'lodash/keys';
+const RadioGroup = Radio.Group;
 import moment from 'moment';
 export default class BookForm extends Component {
   constructor(props) {
@@ -25,6 +37,7 @@ export default class BookForm extends Component {
          authorIntro:[],//作者简介
          prestocks: '',//进货量,
          introduce:[],//简介，
+         flag: 'none',
       },
       isDisable: true,
       coverFileList: [],
@@ -138,7 +151,7 @@ export default class BookForm extends Component {
     if(this.props.book.toJS().bookMenu.data) {
       let bookMenu = this.props.book.toJS().bookMenu.data;
        return(
-         <Cascader options={bookMenu} onChange={this.bookTypeChange.bind(this)}/>
+         <Cascader options={bookMenu} onChange={this.bookTypeChange.bind(this)} value={this.state.formValue.type}/>
       )
     }
   }
@@ -150,7 +163,7 @@ export default class BookForm extends Component {
     })
   }
   componentDidMount() {
-    this.props.bookeBoundAC.getBookType();
+    this.props.bookBoundAC.getBookType();
   }
   textChange(event) {
     let formValue = __assign({}, this.state.formValue);
@@ -181,10 +194,78 @@ export default class BookForm extends Component {
   saveBook() {
     console.log(this.state.formValue);
     let keyList = ['bookName', 'author', 'pubHouse', 'pubDate', 'price', 'discount', 'aprice', 'type', 'prestocks'];
+    let flag = true;
     keyList.map((key)=>{
         if(this.state.formValue[key]== '') {
-            message.error('所有带*号的都为必填项')
+            message.error('所有带*号的都为必填项');
+            flag = false;
+            return false;
         }
+    })
+    if(flag) {
+        if(this.state.coverFileList.length !== 1){
+            message.error('请上传1张封面');
+            return false;
+        }
+        if(this.state.pictureList.length !== 4) {
+            message.error('请上传4张图片');
+            return false;
+        }
+        this.props.bookBoundAC.addBook(this.state.formValue);
+    }
+  }
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.book.toJS().bookInfo.data) {
+        const bookInfo = nextProps.book.toJS().bookInfo.data
+        var xhr = new XMLHttpRequest();
+        var formData = new FormData();
+        xhr.open("post", '/api/book/cover?bookId='+ bookInfo['_id'], true);
+        formData.append('file',this.state.coverFileList[0][0]);
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        xhr.send(formData);
+
+        var xhr1 = new XMLHttpRequest();
+        var formData1 = new FormData();
+        xhr1.open("post", '/api/book/picture?bookId='+ bookInfo['_id'], true);
+        this.state.pictureList.map((file)=>{
+            console.log(file)
+            formData1.append('file',file[0]);
+        })
+        xhr1.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        xhr1.send(formData1);
+        message.success('添加成功！');
+        this.resetFormvalue();
+        this.props.bookBoundAC.clearBookInfo();
+    }
+  }
+  resetFormvalue() {
+    var keyList = __keys(this.state.formValue);
+    var formValue = __assign(this.state.formValue)
+    keyList.map((key)=>{
+        if(key === 'introduce' || key==='authorIntro') {
+            formValue[key] = [];
+        } else if(key === 'discount') {
+            formValue[key] = 10;
+        } else {
+            formValue[key] = '';
+        }
+    })
+    var priceParams = {yuan:0, jiao:0, fen:0};
+    var discount = {shi:9, ge:9};
+    this.setState({
+        formValue: formValue,
+        priceParams: priceParams,
+        discount: discount,
+        coverFileList:[],
+        pictureList: [],
+    })
+  }
+  onChangeRadio(evt) {
+      console.log(evt.target.value);
+    let formValue = __assign({}, this.state.formValue);
+    formValue.flag = evt.target.value;
+    this.setState({
+        formValue: formValue,
     })
   }
   render() {
@@ -312,7 +393,7 @@ export default class BookForm extends Component {
                 折
               </Col>
               <Col span="2">
-                <Checkbox onChange={this.checkBoxHandle.bind(this)} defaultChecked={1===1}/>
+                <Checkbox onChange={this.checkBoxHandle.bind(this)} defaultChecked={true}/>
                 <span style={{margin: '0 5px'}}>无折扣</span>
               </Col>
               <Col span="2">
@@ -321,6 +402,15 @@ export default class BookForm extends Component {
               <Col span="4">
                 <span>{this.state.formValue.aprice}</span>
               </Col>
+            </Row>
+            <Row>
+                <Col span="2">书籍所属区域</Col>
+                <RadioGroup onChange={this.onChangeRadio.bind(this)} value={this.state.formValue.flag}>
+                <Radio key="a" value="none">无</Radio>
+                <Radio key="b" value="new">新书上架</Radio>
+                <Radio key="c" value="onsale">最新优惠</Radio>
+                <Radio key="d" value="extend">推广商品</Radio>
+              </RadioGroup>
             </Row>
             <Row>
               <Col span="2">
@@ -339,7 +429,7 @@ export default class BookForm extends Component {
                 <div className="formKey reqKey">出版时间</div>
               </Col>
               <Col span="8">
-                <DatePicker onChange={this.pubDateChange.bind(this)} />
+                <DatePicker onChange={this.pubDateChange.bind(this)} value={this.state.formValue.pubDate}/>
               </Col>
             </Row>
             <Row>
@@ -415,7 +505,7 @@ export default class BookForm extends Component {
             <Row>
               <Col span="12">
                 <input　className="BookForm-button" type="button"　value="提交" onClick={this.saveBook.bind(this)}/>
-                <input　className="BookForm-button" type="button"　value="取消"/>
+                <input　className="BookForm-button" type="button"　value="返回首页"/>
               </Col>
             </Row>
           </div>

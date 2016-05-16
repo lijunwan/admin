@@ -1,4 +1,5 @@
 export const GET_BOOK_TYPE = 'GET_BOOK_TYPE';
+export const ADD_BOOK = 'ADD_BOOK';
 import HttpRequest from 'superagent';
 export function getBookType () {
 	 return dispatch => {
@@ -10,4 +11,24 @@ export function getBookType () {
         });
     });
   };
+}
+export function addBook(params) {
+	return dispatch => {
+	   HttpRequest.get('/api/book/addbook')
+	   .query(params)
+		.end(function(err,resp){
+		   dispatch({
+			 type: ADD_BOOK,
+			 data: resp.body
+		   });
+	   });
+ 	};
+}
+export function clearBookInfo() {
+	return dispatch => {
+		dispatch({
+			type: ADD_BOOK,
+			data: {},
+		})
+	}
 }

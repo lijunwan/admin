@@ -8,8 +8,11 @@ var ShopCart = require('../modules/shopCart');
 var Favorite = require('../modules/favorite');
 var Order = require('../modules/order');
 app.post('/api/account/login',Account.checkLogin);
-app.get('/api/log',User.isLogin);
+app.get('/api/log',Account.isLogin);
 app.get('/api/book/bookMenu', Books.getBookMenu);
+app.get('/api/book/addbook', Books.addBook);
+app.post('/api/book/cover',Books.addbookCover);
+app.post('/api/book/picture',Books.addBookPicture);
 // app.get('/api/user/phone',User.checkPhone);
 // app.post('/api/user/register',User.createUser);
 // app.del('/api/user/logout',User.logout);
@@ -29,15 +32,16 @@ app.get('/api/book/bookMenu', Books.getBookMenu);
 // app.get('/api/book/searchByType', Books.searchByType);
 // app.get('/api/book/sortBySaleNum',Books.sortBySaleNum);
 // app.get('/api/book/promBook',Books.promBook);
-// app.use('/api/user/authorization/*', function(req, res, next){
-//     if(req.cookies.bookstore && req.cookies.bookstore.id) {
-//         next('route')
-//         console.log(next);
-//     }else {
-//         res.statusCode=401;
-//         res.send({errorCode:400100,message:"未授权"})
-//     }
-// });
+app.use('/api/*', function(req, res, next){
+    console.log(req.cookies.bookstoreAdmin)
+    if(req.cookies.bookstoreAdmin) {
+        next('route')
+        console.log(next);
+    }else {
+        res.statusCode=401;
+        res.send({errorCode:400100,message:"未授权"})
+    }
+});
 // app.get('/api/user/authorization/addShopCarts', ShopCart.addBook);
 // app.get('/api/user/authorization/getShopCarts', ShopCart.getShopCartInfo);
 // app.get('/api/user/authorization/updateShopCart', ShopCart.updateShopCart);

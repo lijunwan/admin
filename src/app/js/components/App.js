@@ -55,7 +55,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
       return {
         clientBoundAC: bindActionCreators(clientAC, dispatch),
-        bookeBoundAC: bindActionCreators(bookAC, dispatch),
+        bookBoundAC: bindActionCreators(bookAC, dispatch),
         // orderBoundAC: bindActionCreators(orderAC, dispatch),
       }
 }

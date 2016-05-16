@@ -20,3 +20,12 @@ Account.checkLogin = function checkLogin(req,res){
 		}
 	})
 }
+Account.isLogin = function isLogin(req,res){
+	if(req.cookies.bookstoreAdmin){
+		res.send({'userName':req.cookies.bookstoreAdmin.userName})
+	}else{
+		res.statusCode=401;
+		res.send({errorCode:401400,message:"未登录"})
+	}
+
+}
