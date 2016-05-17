@@ -50,7 +50,8 @@ export default class BookForm extends Component {
       discount: {
         shi: 9,
         ge: 9,
-      }
+      },
+      bookType:[],
     }
   }
   textareaChange(evt) {
@@ -151,7 +152,7 @@ export default class BookForm extends Component {
     if(this.props.book.toJS().bookMenu.data) {
       let bookMenu = this.props.book.toJS().bookMenu.data;
        return(
-         <Cascader options={bookMenu} onChange={this.bookTypeChange.bind(this)} value={this.state.formValue.type}/>
+         <Cascader options={bookMenu} onChange={this.bookTypeChange.bind(this)} value={this.state.bookType}/>
       )
     }
   }
@@ -160,6 +161,7 @@ export default class BookForm extends Component {
     formValue.type = value[2];
     this.setState({
       formValue: formValue,
+      bookType: value,
     })
   }
   componentDidMount() {
@@ -246,7 +248,8 @@ export default class BookForm extends Component {
             formValue[key] = [];
         } else if(key === 'discount') {
             formValue[key] = 10;
-        } else {
+        }
+        else {
             formValue[key] = '';
         }
     })
@@ -258,6 +261,7 @@ export default class BookForm extends Component {
         discount: discount,
         coverFileList:[],
         pictureList: [],
+        bookType:[],
     })
   }
   onChangeRadio(evt) {
