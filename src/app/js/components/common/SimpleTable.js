@@ -3,7 +3,7 @@ import config from '../../dict';
 import __keys from 'lodash/keys';
 import {Select, Row, Col, Pagination,Modal} from 'antd';
 export default class SimpleTable extends Component {
-    constructor() {
+    constructor(props) {
         super(props);
         this.state = {
             curentData: [],
@@ -19,13 +19,13 @@ export default class SimpleTable extends Component {
     }
     componentWillMount() {
         this.setState({
-            curentData: this.getCurentData(this.props.config.body, 1, this.state.size);
+            curentData: this.getCurentData(this.props.config.body, 1, this.state.size),
             actData: this.props.config.body,
         })
     }
     componentWillReceiveProps(nextProps) {
         this.setState({
-            curentData: this.getCurentData(nextProps.config.body, 1, this.state.size);
+            curentData: this.getCurentData(nextProps.config.body, 1, this.state.size),
             actData: nextProps.config.body,
         })
     }
@@ -42,15 +42,13 @@ export default class SimpleTable extends Component {
         return list;
     }
     createBody() {
+        const rows  = [];
         this.state.curentData.map((row, idx)=>{
-            const rows  = [];
+            const cols = [];
             this.props.config.header.map((col, index)=>{
-                const cols = [];
                 if(col.handleBlock) {
                     cols.push(
-                        <td key={index}>
-                            {col.handleBlock(row)}
-                        </td>
+                        <td key={index}>{col.handleBlock(row)}</td>
                     )
                 } else {
                     cols.push(
@@ -60,6 +58,7 @@ export default class SimpleTable extends Component {
             })
             rows.push(<tr key={idx}>{cols}</tr>)
         })
+        return rows;
     }
     changePage(value) {
         this.setState({
@@ -68,8 +67,8 @@ export default class SimpleTable extends Component {
     }
     render() {
         return(
-            <div>
-                <tabel className="ant-tabel">
+            <div style={{width: '100%'}}>
+                <table className="ant-table" style={{width: '100%'}}>
                     <thead>
                         <tr>
                           {this.createHead()}
@@ -78,9 +77,9 @@ export default class SimpleTable extends Component {
                     <tbody>
                         {this.createBody()}
                     </tbody>
-                </tabel>
-                <Pagination total = {this.state.actData.length} current={this.state.currentPage} pageSize = {this.state.pageSize}  onChange = {this.changePage.bind(this)}/>
-            <div>
+                </table>
+                <Pagination total = {this.state.actData.length} current={this.state.currentPage} pageSize = {this.state.size}  onChange = {this.changePage.bind(this)}/>
+            </div>
         )
     }
 }

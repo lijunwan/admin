@@ -15,6 +15,7 @@ import '../../../css/bookForm.css';
 import Upload from '../common/Upload.js';
 import __assign from 'lodash/assign';
 import __keys from 'lodash/keys';
+import __pick from 'lodash/pick';
 const RadioGroup = Radio.Group;
 import moment from 'moment';
 export default class BookForm extends Component {
@@ -34,9 +35,9 @@ export default class BookForm extends Component {
          pages:'',
          words:'',
          type:'',//分类
-         authorIntro:[],//作者简介
-         prestocks: '',//进货量,
-         introduce:[],//简介，
+         authorIntro:'',//作者简介
+         stocks: '',//进货量,
+         introduce:'',//简介，
          flag: 'none',
       },
       isDisable: true,
@@ -52,12 +53,56 @@ export default class BookForm extends Component {
         ge: 9,
       },
       bookType:[],
+      isEdit: false,
     }
+  }
+  componentWillMount() {
+    if(this.props.location.query.bookId) {
+        this.setState({
+            isEdit: true,
+        })
+        let bookList = JSON.parse(localStorage.getItem('bookList'));
+        console.log(bookList, '???');
+        let bookInfo = {}
+        bookList.map((obj)=>{
+            if(obj['_id'] === this.props.location.query.bookId) {
+                bookInfo = obj;
+            }
+        })
+        var obj = __assign({}, this.state.formValue, bookInfo);
+        var bookType = this.convertBookType(obj.type);
+        var price = this.convertPrice(obj.price);
+        var isDisable = true;
+        if(obj.discount *1 !== 10) {
+           isDisable = false;
+        }
+        this.setState({
+            formValue: obj,
+            bookType: bookType,
+            priceParams: price,
+            isDisable: isDisable,
+        })
+    }
+  }
+  convertPrice(value) {
+    const obj = {};
+    console.log(value, '????');
+    obj.yuan = value.split('.')[0];
+    obj.jiao = value.split('.')[1].substring(0,1);
+    obj.fen = value.split('.')[1].substring(1,2);
+    return obj;
+  }
+  convertBookType(value) {
+    const list = [];
+    list.push(value.substring(0,1));
+    list.push(value.substring(0,2));
+    list.push(value);
+    return list;
   }
   textareaChange(evt) {
     let formValue = __assign({}, this.state.formValue);
     let value = evt.target.value.replace(/\n/, '#');
-    formValue[evt.target.id] = value.split('#');
+    formValue[evt.target.id] = value;
     this.setState({
         formValue: formValue,
     })
@@ -109,10 +154,10 @@ export default class BookForm extends Component {
   countAprice(discount, price) {
     return (discount * 0.1* price).toFixed(2)
   }
-  changeDiscount(event) {
+  changeDiscount(key, value) {
     let discount = __assign({}, this.state.discount);
-    discount[event.target.id] = event.target.value;
-    let formValue = __assign({}, this,state.formValue);
+    discount[key] = value;
+    let formValue = __assign({}, this.state.formValue);
     formValue.discount = discount.shi + '.' + discount.ge;
     formValue.aprice = this.countAprice(formValue.discount, formValue.price);
     this.setState({
@@ -139,6 +184,7 @@ export default class BookForm extends Component {
             formValue: formValue,
         })
     } else {
+      formValue.discount = '9.9';
       this.setState({
         isDisable: false,
       })
@@ -195,7 +241,7 @@ export default class BookForm extends Component {
   }
   saveBook() {
     console.log(this.state.formValue);
-    let keyList = ['bookName', 'author', 'pubHouse', 'pubDate', 'price', 'discount', 'aprice', 'type', 'prestocks'];
+    let keyList = ['bookName', 'author', 'pubHouse', 'pubDate', 'price', 'discount', 'aprice', 'type', 'stocks'];
     let flag = true;
     keyList.map((key)=>{
         if(this.state.formValue[key]== '') {
@@ -204,15 +250,15 @@ export default class BookForm extends Component {
             return false;
         }
     })
-    if(flag) {
-        if(this.state.coverFileList.length !== 1){
-            message.error('请上传1张封面');
-            return false;
-        }
-        if(this.state.pictureList.length !== 4) {
-            message.error('请上传4张图片');
-            return false;
-        }
+    if(1) {
+        // if(this.state.coverFileList.length !== 1){
+        //     message.error('请上传1张封面');
+        //     return false;
+        // }
+        // if(this.state.pictureList.length !== 4) {
+        //     message.error('请上传4张图片');
+        //     return false;
+        // }
         this.props.bookBoundAC.addBook(this.state.formValue);
     }
   }
@@ -244,9 +290,7 @@ export default class BookForm extends Component {
     var keyList = __keys(this.state.formValue);
     var formValue = __assign(this.state.formValue)
     keyList.map((key)=>{
-        if(key === 'introduce' || key==='authorIntro') {
-            formValue[key] = [];
-        } else if(key === 'discount') {
+        if(key === 'discount') {
             formValue[key] = 10;
         }
         else {
@@ -283,7 +327,7 @@ export default class BookForm extends Component {
         <div className="breadcrumb">
           <Breadcrumb>
             <Breadcrumb.Item>书籍管理</Breadcrumb.Item>
-            <Breadcrumb.Item>添加书籍</Breadcrumb.Item>
+            <Breadcrumb.Item>{this.state.isEdit ? '修改书籍信息' : '添加书籍'}</Breadcrumb.Item>
           </Breadcrumb>
           <div className="form">
             <Row>
@@ -371,7 +415,7 @@ export default class BookForm extends Component {
                 <div className="formKey">折扣</div>
               </Col>
               <Col span="4">
-                 <Select defaultValue="9" disabled={this.state.isDisable} id="shi" value={this.state.discount.shi} onChange={this.changeDiscount.bind(this)}>
+                 <Select defaultValue="9" disabled={this.state.isDisable} id="shi" value={this.state.discount.shi} onChange={this.changeDiscount.bind(this,'shi')}>
                     <Option value="9">9</Option>
                     <Option value="8">8</Option>
                     <Option value="7">7</Option>
@@ -383,7 +427,7 @@ export default class BookForm extends Component {
                     <Option value="1">1</Option>
                 </Select>
                 <span style={{margin: '0 5px'}}>.</span>
-                 <Select defaultValue="9" disabled={this.state.isDisable} id="ge" value={this.state.discount.ge} onChange={this.changeDiscount.bind(this)}>
+                 <Select defaultValue="9" disabled={this.state.isDisable} id="ge" value={this.state.discount.ge} onChange={this.changeDiscount.bind(this, 'ge')}>
                     <Option value="9">9</Option>
                     <Option value="8">8</Option>
                     <Option value="7">7</Option>
@@ -397,7 +441,7 @@ export default class BookForm extends Component {
                 折
               </Col>
               <Col span="2">
-                <Checkbox onChange={this.checkBoxHandle.bind(this)} defaultChecked={true}/>
+                <Checkbox onChange={this.checkBoxHandle.bind(this)} value={!this.state.isDisable}/>
                 <span style={{margin: '0 5px'}}>无折扣</span>
               </Col>
               <Col span="2">
@@ -479,8 +523,8 @@ export default class BookForm extends Component {
                 <input type="number"
                        className="ant-input"
                        style={{width: '80px'}}
-                       id="prestocks"
-                       value={this.state.formValue.prestocks}
+                       id="stocks"
+                       value={this.state.formValue.stocks}
                        onChange={this.numberChange.bind(this)}/>
               </Col>
             </Row>
@@ -491,7 +535,7 @@ export default class BookForm extends Component {
               <Col span="8">
                 <textarea className="ant-input"
                           id="authorIntro"
-                          value={this.state.formValue.authorIntro.join('\n')}
+                          value={this.state.formValue.authorIntro.replace('#','\n')}
                           onChange={this.textareaChange.bind(this)}/>
               </Col>
             </Row>
@@ -502,7 +546,7 @@ export default class BookForm extends Component {
               <Col span="8">
                 <textarea className="ant-input"
                           id="introduce"
-                          value={this.state.formValue.introduce.join('\n')}
+                          value={this.state.formValue.introduce.replace('#','\n')}
                           onChange={this.textareaChange.bind(this)}/>
               </Col>
             </Row>

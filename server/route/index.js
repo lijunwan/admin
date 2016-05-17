@@ -13,6 +13,7 @@ app.get('/api/book/bookMenu', Books.getBookMenu);
 app.get('/api/book/addbook', Books.addBook);
 app.post('/api/book/cover',Books.addbookCover);
 app.post('/api/book/picture',Books.addBookPicture);
+app.get('/api/book/bookList', Books.getBookList);
 // app.get('/api/user/phone',User.checkPhone);
 // app.post('/api/user/register',User.createUser);
 // app.del('/api/user/logout',User.logout);

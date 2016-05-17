@@ -83,6 +83,11 @@ Books.addBook = function(req, res) {
 		res.send({data: book});
 	})
 }
+Books.getBookList = function(req,res) {
+	db['bookInfo'].find({}, function(error, data) {
+		res.send({data: data});
+	})
+}
 // Books.searchBook = function searchBook(req, res) {
 // 	var reg = new RegExp(req.query.searchKey,'i');
 // 	searchBookMongo(reg, 'bookInfo', function(err, data){

@@ -55,20 +55,20 @@ db.once('open', function (callback) {
 		pubHouse:String,//出版社
 		pubDate:String,//出版时间
 		comment:[],//评论 存放评论的id
-		price: Number,//定价
-		discount: Number,//折扣
-		aprice: Number,//售价
+		price: String,//定价
+		discount: String,//折扣
+		aprice: String,//售价
 		cover:String,//封面 保存 照片位置
 		picture:[],//书籍的图片
 		editions:String,//版次
 		pages:Number,
 		words:Number,
 		type:String,//分类
-		authorIntro:[],//作者简介
+		authorIntro:String,//作者简介
 		stocks:Number,//库存
 		saleNumber:Number,//销售量，
 		prestocks: Number,//进货量,
-		introduce:[],//简介，
+		introduce:String,//简介，
 		scores:Number,//评分
 		flag: String,//书籍的状态
 		favorite: [],

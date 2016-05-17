@@ -1,5 +1,6 @@
 export const GET_BOOK_TYPE = 'GET_BOOK_TYPE';
 export const ADD_BOOK = 'ADD_BOOK';
+export const GET_BOOK_LIST = 'GET_BOOK_LIST';
 import HttpRequest from 'superagent';
 export function getBookType () {
 	 return dispatch => {
@@ -31,4 +32,15 @@ export function clearBookInfo() {
 			data: {},
 		})
 	}
+}
+export function getBookList() {
+	return dispatch => {
+	   HttpRequest.get('/api/book/bookList')
+		.end(function(err,resp){
+		   dispatch({
+			 type: GET_BOOK_LIST,
+			 data: resp.body
+		   });
+	   });
+ 	};
 }
