@@ -31,7 +31,30 @@ export default class  Upload extends Component {
             imgList: [],
         })
       }
+  }
+  componentDidMount() {
+    const list = [];
+    if(this.props.isEdit) {
+        console.log(this.props.fileList, '----12');
+        this.props.fileList.map((value)=>{
+            if(typeof(value)=== 'string') {
+                list.push(
+                    <div className="Upload-img-wrap" key={list.length}>
+                      <img className="Upload-list-item" src={value} />
+                      <div className="Upload-img-cover">
+                        <div className="Upload-img-modal">
+                          <i className="anticon anticon-delete Upload-delete" onClick={this.delImg.bind(this, list.length)}></i>
+                        </div>
+                      </div>
+                    </div>
+                )
+            }
+        })
+        this.setState({
+            imgList: list,
+        })
     }
+  }
   previewFile(e) {
     let fileList = this.props.fileList.slice(0);
     const file = e.target.files;

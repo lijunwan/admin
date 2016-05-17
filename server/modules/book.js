@@ -34,7 +34,7 @@ function uploadCover(req, res, dir) {
 		const type = files.file.name.split('.')[1];
 		var newPath = dir +'/'+ 'cover' +'.' +type;
 		fs.renameSync(files.file.path, newPath);
-		var coverPath =  'book/'+ req.query.bookId + '/' + 'cover' + '.' +type;
+		var coverPath =  '/book/'+ req.query.bookId + '/' + 'cover' + '.' +type;
 		db['bookInfo'].findById(req.query.bookId, function(error, data){
 			data.cover = coverPath;
 			data.save();
@@ -57,6 +57,13 @@ Books.addBookPicture = function(req, res) {
 
 	});
 }
+Books.editBookInfo = function(req, res) {
+	var id = req.query['_id'];
+	delete req.query._id;
+	db['bookInfo'].update({_id: id},req.query, function(error, data){
+		res.send({data: data});
+	})
+}
 function uploadPicture(req, res, dir) {
 	var form = new formidable.IncomingForm();   //创建上传表单
     form.uploadDir = dir;	 //设置上传目录
@@ -68,7 +75,7 @@ function uploadPicture(req, res, dir) {
 		files.file.map(function(file){
 			console.log(file.path.split('/'));
 			var pathList = file.path.split('/');
-			list.push(pathList[pathList.length-1]);
+			list.push('/book/'+ req.query.bookId + '/'+pathList[pathList.length-1]);
 		})
 		db['bookInfo'].findById(req.query.bookId, function(error, data){
 			data.picture = list;

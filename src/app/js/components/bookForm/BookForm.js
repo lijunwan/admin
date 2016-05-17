@@ -73,6 +73,8 @@ export default class BookForm extends Component {
         var bookType = this.convertBookType(obj.type);
         var price = this.convertPrice(obj.price);
         var isDisable = true;
+        var coverList = [];
+        coverList.push(obj.cover)
         if(obj.discount *1 !== 10) {
            isDisable = false;
         }
@@ -81,15 +83,23 @@ export default class BookForm extends Component {
             bookType: bookType,
             priceParams: price,
             isDisable: isDisable,
+            coverFileList: coverList,
+            pictureList: obj.picture
         })
     }
   }
   convertPrice(value) {
-    const obj = {};
+    const obj = {
+        yuan: 0,
+        jiao: 0,
+        fen:0,
+    };
     console.log(value, '????');
-    obj.yuan = value.split('.')[0];
-    obj.jiao = value.split('.')[1].substring(0,1);
-    obj.fen = value.split('.')[1].substring(1,2);
+    if(value) {
+        obj.yuan = value.split('.')[0];
+        obj.jiao = value.split('.')[1].substring(0,1);
+        obj.fen = value.split('.')[1].substring(1,2);
+    }
     return obj;
   }
   convertBookType(value) {
@@ -250,34 +260,45 @@ export default class BookForm extends Component {
             return false;
         }
     })
-    if(1) {
-        // if(this.state.coverFileList.length !== 1){
-        //     message.error('请上传1张封面');
-        //     return false;
-        // }
-        // if(this.state.pictureList.length !== 4) {
-        //     message.error('请上传4张图片');
-        //     return false;
-        // }
-        this.props.bookBoundAC.addBook(this.state.formValue);
+    if(flag) {
+        if(this.state.coverFileList.length !== 1){
+            message.error('请上传1张封面');
+            return false;
+        }
+        if(this.state.pictureList.length !== 4) {
+            message.error('请上传4张图片');
+            return false;
+        }
+        if(this.state.isEdit) {
+            var obj = __assign({}, this.state.formValue);
+            obj['_id'] = this.props.location.query.bookId
+            this.props.bookBoundAC.modifyBookInfo(obj)
+        } else {
+            this.props.bookBoundAC.addBook(this.state.formValue);
+        }
     }
   }
   componentWillReceiveProps(nextProps) {
+    console.log(nextProps.book.toJS().bookInfo.data, '===')
     if(nextProps.book.toJS().bookInfo.data) {
-        const bookInfo = nextProps.book.toJS().bookInfo.data
-        var xhr = new XMLHttpRequest();
-        var formData = new FormData();
-        xhr.open("post", '/api/book/cover?bookId='+ bookInfo['_id'], true);
-        formData.append('file',this.state.coverFileList[0][0]);
-        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-        xhr.send(formData);
+        const bookInfo = nextProps.book.toJS().bookInfo.data;
+        if(typeof(this.state.coverFileList[0]) !== 'string') {
+            var xhr = new XMLHttpRequest();
+            var formData = new FormData();
+            xhr.open("post", '/api/book/cover?bookId='+ bookInfo['_id'], true);
+            formData.append('file',this.state.coverFileList[0][0]);
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            xhr.send(formData);
+        }
 
         var xhr1 = new XMLHttpRequest();
         var formData1 = new FormData();
         xhr1.open("post", '/api/book/picture?bookId='+ bookInfo['_id'], true);
+        console.log(this.state.pictureList,'=====');
         this.state.pictureList.map((file)=>{
-            console.log(file)
-            formData1.append('file',file[0]);
+            if(typeof(file) != 'string') {
+                formData1.append('file',file[0]);
+            }
         })
         xhr1.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         xhr1.send(formData1);
@@ -322,6 +343,7 @@ export default class BookForm extends Component {
       onChange: this.handleChangeCover,
       listType: "picture-card",
     }
+    console.log(this.state.coverFileList, '！！！！')
     return(
       <div className="bookForm">
         <div className="breadcrumb">
@@ -335,7 +357,7 @@ export default class BookForm extends Component {
                 <div className="formKey reqKey">封面(１张)</div>
               </Col>
               <Col span="20">
-                <Upload {...coverProps} count="1" fileList={this.state.coverFileList} changeState={this.changeCover.bind(this)}>
+                <Upload {...coverProps} count="1" fileList={this.state.coverFileList} changeState={this.changeCover.bind(this)} isEdit={this.state.isEdit}>
                 </Upload>
               </Col>
             </Row>
@@ -344,7 +366,7 @@ export default class BookForm extends Component {
                 <div className="formKey reqKey">图片(4张)</div>
               </Col>
               <Col span="20">
-                <Upload listType="picture-card" count="4" fileList={this.state.pictureList} changeState={this.changePicture.bind(this)}>
+                <Upload listType="picture-card" count="4" fileList={this.state.pictureList} changeState={this.changePicture.bind(this)} isEdit={this.state.isEdit}>
                 </Upload>
               </Col>
             </Row>

@@ -18,7 +18,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, '../dist')));
-app.use(express.static(path.join(__dirname, '/images')));
+app.use(express.static(path.join(__dirname, '../../graduate/server/images/')));
+console.log(path.join(__dirname, '../../graduate/server/images/'), '====')
 app.get("/",function(req,res){
      var options={
           root:'dist'

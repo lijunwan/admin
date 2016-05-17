@@ -33,6 +33,18 @@ export function clearBookInfo() {
 		})
 	}
 }
+export function modifyBookInfo(params) {
+	return dispatch => {
+	   HttpRequest.get('/api/book/editBookInfo')
+	   .query(params)
+		.end(function(err,resp){
+		   dispatch({
+			 type: ADD_BOOK,
+			 data: resp.body
+		   });
+	   });
+ 	};
+}
 export function getBookList() {
 	return dispatch => {
 	   HttpRequest.get('/api/book/bookList')
