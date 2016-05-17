@@ -3,10 +3,14 @@ import logoImg from '../../../images/logo.jpg';
 import '../../../css/index.css';
 import {Menu,Icon} from 'antd';
 import SimpleTable from '../common/SimpleTable';
+import Search from '../common/Search';
 
 export default class  Index extends Component{
 	constructor(props){
-		super(props)
+		super(props);
+		this.state = {
+			searchType: 'id',
+		}
 	}
 	componentWillMount() {
 	}
@@ -60,6 +64,9 @@ export default class  Index extends Component{
 			<div className="index">
 				<h1 className="title"><Icon type="book" />书籍管理</h1>
 				<a onClick={this.redirectBookForm.bind(this)}>添加书籍</a>
+				<div style={{margin: '50px 0'}}>
+				<Search {...this.props}/>
+				</div>
 				<SimpleTable config={config} />
 			</div>
 	  )

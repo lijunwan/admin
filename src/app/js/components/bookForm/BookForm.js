@@ -54,6 +54,7 @@ export default class BookForm extends Component {
       },
       bookType:[],
       isEdit: false,
+      delFileList:[],
     }
   }
   componentWillMount() {
@@ -69,22 +70,24 @@ export default class BookForm extends Component {
                 bookInfo = obj;
             }
         })
-        var obj = __assign({}, this.state.formValue, bookInfo);
-        var bookType = this.convertBookType(obj.type);
-        var price = this.convertPrice(obj.price);
+        var bookInfoData = __assign({}, this.state.formValue, bookInfo);
+        delete bookInfoData.picture;
+        console.log(bookInfoData,'====')
+        var bookType = this.convertBookType(bookInfoData.type);
+        var price = this.convertPrice(bookInfoData.price);
         var isDisable = true;
         var coverList = [];
-        coverList.push(obj.cover)
-        if(obj.discount *1 !== 10) {
+        coverList.push(bookInfoData.cover)
+        if(bookInfoData.discount *1 !== 10) {
            isDisable = false;
         }
         this.setState({
-            formValue: obj,
+            formValue: bookInfoData,
             bookType: bookType,
             priceParams: price,
             isDisable: isDisable,
             coverFileList: coverList,
-            pictureList: obj.picture
+            pictureList: bookInfo.picture
         })
     }
   }
@@ -282,6 +285,7 @@ export default class BookForm extends Component {
     console.log(nextProps.book.toJS().bookInfo.data, '===')
     if(nextProps.book.toJS().bookInfo.data) {
         const bookInfo = nextProps.book.toJS().bookInfo.data;
+        console.log(typeof(this.state.coverFileList[0]),'------');
         if(typeof(this.state.coverFileList[0]) !== 'string') {
             var xhr = new XMLHttpRequest();
             var formData = new FormData();
@@ -295,16 +299,22 @@ export default class BookForm extends Component {
         var formData1 = new FormData();
         xhr1.open("post", '/api/book/picture?bookId='+ bookInfo['_id'], true);
         console.log(this.state.pictureList,'=====');
+        let flag = false;
         this.state.pictureList.map((file)=>{
             if(typeof(file) != 'string') {
                 formData1.append('file',file[0]);
+                flag = true;
             }
         })
-        xhr1.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-        xhr1.send(formData1);
-        message.success('添加成功！');
-        this.resetFormvalue();
-        this.props.bookBoundAC.clearBookInfo();
+        if(flag) {
+            xhr1.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            xhr1.send(formData1);
+            message.success('保存成功！');
+            if(!this.state.isEdit) {
+                this.resetFormvalue();
+                this.props.bookBoundAC.clearBookInfo();
+            }
+        }
     }
   }
   resetFormvalue() {
@@ -343,7 +353,7 @@ export default class BookForm extends Component {
       onChange: this.handleChangeCover,
       listType: "picture-card",
     }
-    console.log(this.state.coverFileList, '！！！！')
+    console.log(this.state.pictureList, '！！！！')
     return(
       <div className="bookForm">
         <div className="breadcrumb">

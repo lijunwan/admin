@@ -60,7 +60,7 @@ Books.addBookPicture = function(req, res) {
 Books.editBookInfo = function(req, res) {
 	var id = req.query['_id'];
 	delete req.query._id;
-	db['bookInfo'].update({_id: id},req.query, function(error, data){
+	db['bookInfo'].findOneAndUpdate({_id: id},req.query, function(error, data,value){
 		res.send({data: data});
 	})
 }
@@ -72,13 +72,20 @@ function uploadPicture(req, res, dir) {
 	form.multiples = true;
 	form.parse(req, function(err, fields, files) {
 		var list = [];
-		files.file.map(function(file){
-			console.log(file.path.split('/'));
-			var pathList = file.path.split('/');
+		if(files.file instanceof Array) {
+			files.file.map(function(file){
+				var pathList = file.path.split('/');
+				list.push('/book/'+ req.query.bookId + '/'+pathList[pathList.length-1]);
+			})
+		} else {
+			var pathList = files.file.path.split('/');
 			list.push('/book/'+ req.query.bookId + '/'+pathList[pathList.length-1]);
-		})
+		}
 		db['bookInfo'].findById(req.query.bookId, function(error, data){
-			data.picture = list;
+			console.log(data.picture, '======')
+			list.map(function(url){
+				data.picture.push(url);
+			})
 			data.save();
 			res.send({data: data.picture})
 		})
@@ -95,22 +102,20 @@ Books.getBookList = function(req,res) {
 		res.send({data: data});
 	})
 }
-// Books.searchBook = function searchBook(req, res) {
-// 	var reg = new RegExp(req.query.searchKey,'i');
-// 	searchBookMongo(reg, 'bookInfo', function(err, data){
-// 		var list = [];
-// 		data.map((item)=>{
-// 			var obj = __pick(item, ['bookName', 'aprice','author', 'pubHouse', 'pubDate', 'price', 'discount', 'cover', 'introduce', 'saleNumber', 'scores']);
-//
-// 			obj.id = item['_id'];
-// 			console.log('===', item.evaluation)
-// 			// obj.scores = calculatedAverage(item.evaluation,'scores');
-// 			list.push(obj);
-// 			console.log(obj);
-// 		});
-// 		res.send({data:list});
-// 	})
-// }
+Books.searchBook = function searchBook(req, res) {
+	if(req.query.searchType === 'id') {
+		db['bookInfo'].findById(req.query.searchKey, function(error, data){
+			var list = [];
+			list.push(data);
+			res.send({data: list});
+		})
+	}else {
+		var reg = new RegExp(req.query.searchKey,'i');
+		searchBookMongo(reg, 'bookInfo', function(err, data){
+			res.send({data:data});
+		})
+	}
+}
 // Books.getOnSaleBooks = function getOnSaleBook (req, res) {
 // 	getBooks('bookOnSale', function(err, data){
 // 		if(data){
@@ -244,9 +249,9 @@ Books.getBookMenu = function(req, res) {
 // 	  callback(err, data);
 //   })
 // }
-// function searchBookMongo(reg, dataBase, callback) {
-// 	console.log('//////////===',reg);
-// 	db[dataBase].find().or([{bookName:reg}, {author:reg}]).exec(function(err, data){
-//   	  callback(err, data);
-//     })
-// }
+function searchBookMongo(reg, dataBase, callback) {
+	console.log('//////////===',reg);
+	db[dataBase].find().or([{bookName:reg}, {author:reg}]).exec(function(err, data){
+  	  callback(err, data);
+    })
+}

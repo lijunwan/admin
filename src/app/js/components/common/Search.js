@@ -6,62 +6,47 @@ export default class Search extends Component {
         super(props);
         this.state = {
             searchKey: '',
-            autoComplete: [],
+            searchType: 'id',
         }
     }
     onChangeHandel(event){
         this.setState({
             searchKey: event.target.value
         });
-        if(event.target.value !== ''){
-            this.props.bookeBoundAC.searchBooks({searchKey: event.target.value});
-        } else {
-            this.props.bookeBoundAC.clearAutoComplete();
-        }
     }
     showSearchResult() {
-        this.props.history.pushState(null, '/searchResult', {searchKey: this.state.searchKey});
-        this.props.bookeBoundAC.clearAutoComplete();
+        var obj = {
+            searchType: this.state.searchType,
+            searchKey: this.state.searchKey,
+        }
+        this.props.bookBoundAC.searchBook(obj);
     }
     componentWillReceiveProps(nextProps) {
+    }
+    changeSearchType(value) {
         this.setState({
-            autoComplete: nextProps.bookInfo.toJS().autoComplete.data
-        });
-    }
-    showBookDetai(id) {
-        this.props.history.pushState(null, '/book/'+ id);
-        this.props.bookeBoundAC.clearAutoComplete();
-    }
-    createBookList() {
-        var list = [];
-        const autoComplete = this.state.autoComplete;
-        if(!autoComplete){
-            return;
-        }
-        autoComplete.map((data)=>{
-            list.push(
-                <li onClick={this.showBookDetai.bind(this, data.id)}>
-                    <Row>
-                        <Col span="12">{data.bookName}</Col>
-                        <Col span="12" style={{textAlign: 'right'}}>{data.author}</Col>
-                    </Row>
-                </li>
-            )
+            searchType: value,
         })
-        return list;
     }
     render() {
+        var searchType ={
+            'id': 'id',
+            'other': '其他'
+        }
+        var placeStr = this.state.searchType === 'id' ? '请输入书籍id' : '请输入图书名或者作者名';
         return(
             <div className="Search">
-                <input placeholder="请输入图书名或者作者名字进行搜索" onChange = {this.onChangeHandel.bind(this)} value={this.state.searchKey}/>
+                <ul className="Search-type">
+                  <span>
+                  <span className="Search-type-text">{searchType[this.state.searchType]}</span>
+                  <i className="Search-triangel"></i></span>
+                  <ul className="Search-type-menu">
+                      <li><a onClick={this.changeSearchType.bind(this, 'id')}>id</a></li>
+                      <li><a onClick={this.changeSearchType.bind(this, 'other')}>其他</a></li>
+                  </ul>
+                </ul>
+                <input placeholder={placeStr} onChange = {this.onChangeHandel.bind(this)} value={this.state.searchKey}/>
                 <a href="javascript:;" onClick={this.showSearchResult.bind(this)}><i className="fa fa-search"></i></a>
-                {
-                    this.state.autoComplete && this.state.autoComplete.length > 0 ?
-                    <ul className="Search-list">
-                        {this.createBookList()}
-                    </ul>
-                    : ''
-                }
             </div>
         )
     }

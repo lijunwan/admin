@@ -61,9 +61,11 @@ export default class SimpleTable extends Component {
         return rows;
     }
     changePage(value) {
+        console.log(value);
         this.setState({
-            currentPage: value,
-        })
+            curentPage: value,
+            curentData: this.getCurentData(this.state.actData, value, this.state.size),
+        });
     }
     render() {
         return(
@@ -78,7 +80,7 @@ export default class SimpleTable extends Component {
                         {this.createBody()}
                     </tbody>
                 </table>
-                <Pagination total = {this.state.actData.length} current={this.state.currentPage} pageSize = {this.state.size}  onChange = {this.changePage.bind(this)}/>
+                <Pagination total = {this.state.actData.length} current={this.state.curentPage} pageSize = {this.state.size}  onChange = {this.changePage.bind(this)}/>
             </div>
         )
     }

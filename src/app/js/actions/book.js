@@ -56,3 +56,15 @@ export function getBookList() {
 	   });
  	};
 }
+export function searchBook(params) {
+	return dispatch => {
+	   HttpRequest.get('/api/book/searchBook')
+	   .query(params)
+		.end(function(err,resp){
+		   dispatch({
+			 type: GET_BOOK_LIST,
+			 data: resp.body
+		   });
+	   });
+ 	};
+}
