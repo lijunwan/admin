@@ -96,7 +96,7 @@ function uploadPicture(req, res, dir) {
 			console.log(data.picture, '======')
 			var picture = data.picture.slice(0);
 	 		delfileList.map(function(delUrl){
-			 	picture = __remove(data.picture.slice(0), function(pic){
+			 	picture = __remove(picture, function(pic){
 					return pic !== delUrl;
 				})
 			})
