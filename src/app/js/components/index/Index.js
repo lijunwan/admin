@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import logoImg from '../../../images/logo.jpg';
 import '../../../css/index.css';
-import {Menu,Icon} from 'antd';
+import {Menu,Icon,Modal} from 'antd';
 import SimpleTable from '../common/SimpleTable';
 import Search from '../common/Search';
 
@@ -10,6 +10,8 @@ export default class  Index extends Component{
 		super(props);
 		this.state = {
 			searchType: 'id',
+			isShowDelModal: false,
+			delBookId: '',
 		}
 	}
 	componentWillMount() {
@@ -34,10 +36,27 @@ export default class  Index extends Component{
 		return (
 			<div>
 				<a onClick={this.modifyBookInfo.bind(this, obj['_id'])}>修改</a>|
-				<a>删除</a>|
+				<a onClick={this.showDelModal.bind(this,obj['_id'])}>删除</a>|
 				<a>查看</a>
 			</div>
 		)
+	}
+	showDelModal(value) {
+		this.setState({
+			delBookId: value,
+			isShowDelModal: true,
+		})
+	}
+	delBook() {
+		this.props.bookBoundAC.delBook({bookId: this.state.delBookId});
+		this.setState({
+			isShowDelModal: false,
+		})
+	}
+	handleCancel() {
+		this.setState({
+			isShowDelModal: false,
+		})
 	}
 	render(){
 		if(!this.props.book.toJS().bookList.data) {
@@ -68,6 +87,10 @@ export default class  Index extends Component{
 				<Search {...this.props}/>
 				</div>
 				<SimpleTable config={config} />
+				<Modal title="信息确认框" visible={this.state.isShowDelModal}
+				  onOk={this.delBook.bind(this)} onCancel={this.handleCancel.bind(this)}>
+				  <p>是否删除这条记录？</p>
+				</Modal>
 			</div>
 	  )
 	}

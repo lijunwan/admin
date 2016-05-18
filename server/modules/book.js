@@ -135,36 +135,20 @@ Books.searchBook = function searchBook(req, res) {
 		})
 	}
 }
-// Books.getOnSaleBooks = function getOnSaleBook (req, res) {
-// 	getBooks('bookOnSale', function(err, data){
-// 		if(data){
-// 			res.send({data:data})
-// 		}else {
-// 			res.statusCode=404;
-// 			res.send({errorCode:404601,message:"未知错误"})//数据库错误
-// 		}
-// 	})
-// }
-// Books.getNewBooks = function getOnSaleBook (req, res) {
-// 	getBooks('bookNew', function(err, data){
-// 		if(data){
-// 			res.send({data:data})
-// 		}else {
-// 			res.statusCode=404;
-// 			res.send({errorCode:404601,message:"未知错误"})//数据库错误
-// 		}
-// 	})
-// }
-// Books.getBookInfo = function getBookInfo (req, res) {
-// 	getBookDetailInfor('bookInfo',req.query.bookId ,function(err, data){
-// 		if(data){
-// 			res.send({data:data})
-// 		}else {
-// 			res.statusCode=404;
-// 			res.send({errorCode:404601,message:"Not found"})//数据库错误
-// 		}
-// 	})
-// }
+Books.delBook = function(req, res) {
+	db['bookInfo'].findByIdAndRemove(req.query.bookId, function(error, data){
+		db['bookInfo'].find({}, function(error, data){
+			res.send({data: data});
+		})
+	})
+}
+Books.getBookInfo = function(req, res) {
+	db['bookInfo'].findById(req.query.bookId, function(error, data){
+		if(data) {
+			res.send({data :data});
+		}
+	})
+}
 Books.getBookMenu = function(req, res) {
 	db['bookMenu'].find({},function(error, data){
 		console.log('---',error);

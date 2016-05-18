@@ -13,19 +13,19 @@ db.once('open', function (callback) {
 	   		userName: String,
 	   		password: String,
 	   })
-	// var userSchema = new Schema({
-	// 	phone:String,//电话
-	// 	password:String,//密码
-	// 	userName:String,//用户名
-	// 	shopCart:[],//购物车 数组保存id
-	// 	payOrder:[],//账单
-	// 	favorite:[],//收藏夹
-	// 	sex:String,//性别 1 男 2 女 0 其他
-	// 	birthday:String,//生日
-	// 	headImg:String,//头像 保存图片的地址
-	// 	name: String,//真实姓名
-	// 	ShippingAddress:[],//收货地址s
-	// });
+	var userSchema = new Schema({
+		phone:String,//电话
+		password:String,//密码
+		userName:String,//用户名
+		shopCart:[],//购物车 数组保存id
+		payOrder:[],//账单
+		favorite:[],//收藏夹
+		sex:String,//性别 1 男 2 女 0 其他
+		birthday:String,//生日
+		headImg:String,//头像 保存图片的地址
+		name: String,//真实姓名
+		ShippingAddress:[],//收货地址s
+	});
 	// var shopCartSchema = new Schema({
 	// 	bookId: String,//书的id
 	// 	count: Number,//数量
@@ -225,7 +225,7 @@ db.once('open', function (callback) {
 		}
 	}
 	dataModel['account'] = db.model('account', accountSchema, 'account');
-	// dataModel["users"] = db.model('users',userSchema,'users');
+	dataModel["users"] = db.model('users',userSchema,'users');
 	// dataModel["baseInfo"] = db.model('baseInfo',baseInfoSchema,'baseInfo');
 	// dataModel["logs"] = db.model('logs',logSchema);
 	dataModel["bookInfo"] = db.model('bookInfo',bookInfoSchema,'bookInfo');

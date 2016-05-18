@@ -1,6 +1,7 @@
 export const GET_BOOK_TYPE = 'GET_BOOK_TYPE';
 export const ADD_BOOK = 'ADD_BOOK';
 export const GET_BOOK_LIST = 'GET_BOOK_LIST';
+export const GET_BOOK_INFO = 'GET_BOOK_INFO';
 import HttpRequest from 'superagent';
 export function getBookType () {
 	 return dispatch => {
@@ -63,6 +64,30 @@ export function searchBook(params) {
 		.end(function(err,resp){
 		   dispatch({
 			 type: GET_BOOK_LIST,
+			 data: resp.body
+		   });
+	   });
+ 	};
+}
+export function delBook(params) {
+	return dispatch => {
+	   HttpRequest.get('/api/book/delBook')
+	   .query(params)
+		.end(function(err,resp){
+		   dispatch({
+			 type: GET_BOOK_LIST,
+			 data: resp.body
+		   });
+	   });
+ 	};
+}
+export function getBookInfo(params) {
+	return dispatch => {
+	   HttpRequest.get('/api/book/getBookInfo')
+	   .query(params)
+		.end(function(err,resp){
+		   dispatch({
+			 type: GET_BOOK_INFO,
 			 data: resp.body
 		   });
 	   });
