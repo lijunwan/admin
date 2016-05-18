@@ -66,13 +66,14 @@ db.once('open', function (callback) {
 		type:String,//分类
 		authorIntro:String,//作者简介
 		stocks:Number,//库存
-		saleNumber:Number,//销售量，
+		saleNumber:0,//销售量，
 		prestocks: Number,//进货量,
 		introduce:String,//简介，
-		scores:Number,//评分
+		scores:0,//评分
 		flag: String,//书籍的状态
 		favorite: [],
-		evaluation:[],//评介　
+		evaluation:[],//评介
+		typeText: String,
 	});
 	// //折扣书籍
 	// var bookOnSaleSchema = new Schema ({

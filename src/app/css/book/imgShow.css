@@ -11,9 +11,17 @@
 .ImgShow-nav li img:hover{
     outline: 3px red solid;
 }
+.Imgshow {
+    width: 350px;
+    height: 350px;
+}
 .Imgshow img {
     width: 100%;
     height: 100%;
+}
+.ImgShow-nav li {
+    width: 54px;
+    height: 54px;
 }
 .ImgShow-nav img {
     width: 100%;

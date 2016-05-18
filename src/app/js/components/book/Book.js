@@ -4,10 +4,11 @@ import NumberBox from './NumberBox'
 import ImgShow from './ImgShow';
 import BookTab from './BookTab';
 import BookDetail from './BookDetail'
-import {Icon, Row, Col,message} from 'antd';
+import {Icon, Row, Col,message,Breadcrumb} from 'antd';
 import logoImg from '../../../images/logo.jpg';
 import Search from '../common/Search';
 import moment from 'moment';
+import config from '../../dict';
 export default class  Book extends Component{
     constructor(props) {
       super(props);
@@ -110,7 +111,15 @@ export default class  Book extends Component{
         )
       })
     }
+    if(list.length <1) {
+        list.push(
+            <p className="BookDetai-nocontent">暂无评价</p>
+        )
+    }
     return list;
+  }
+  editBookInfo() {
+    this.props.history.pushState(null, '/bookForm?bookId='+ this.props.params.bookId)
   }
     render() {
         const bookInfo = this.props.book.toJS().bookDetail;
@@ -118,18 +127,20 @@ export default class  Book extends Component{
         const favoriteText = this.state.isFavorite ? '已收藏' : '收藏商品';
         if(bookInfo.data) {
             const money = this.modifyMoney(bookInfo.data.price);
+            const picture = bookInfo.data.picture.slice(0);
+            picture.unshift(bookInfo.data.cover);
             return(
                 <div>
-                  <div className="Index-header clearfix" style={{width:'1200px',margin: '50px auto'}}>
-          					<a href="/"><img src={logoImg} alt=""/></a>
-          				<div className="Index-search">
-          					<Search {...this.props} />
-          				</div>
-                </div>
+                    <div  style={{margin: '50px 0'}}>
+                        <Breadcrumb>
+                          <Breadcrumb.Item>书籍管理</Breadcrumb.Item>
+                          <Breadcrumb.Item>查看详情</Breadcrumb.Item>
+                        </Breadcrumb>
+                    </div>
                 <div className="Book clearfix">
                     <div className="Book-infor">
                         <div className="Book-img">
-                            <ImgShow data = {bookInfo.data.picture}/>
+                            <ImgShow data = {picture}/>
                         </div>
                         <div className="Book-basic-info clearfix">
                           <div className="Info-box">
@@ -140,26 +151,26 @@ export default class  Book extends Component{
                                 <span className= "Info-pub-item">出版时间：{bookInfo.data.pubDate}</span>
                             </p>
                             <div className="price-info">
-                              <p><span className="price-key letter02">定价</span> <span><s>￥{money}</s></span></p>
-                              <p><span className="price-key letter01 marginRight">折扣价</span><span className="price-money">￥{bookInfo.data.aprice}</span><span className="marginLeft">({bookInfo.data.discount}折)</span></p>
+                              <p><span className="price-key letter02">定价</span> <span>￥{bookInfo.data.price}</span></p>
+                              <p>
+                                <span className="price-key letter02">折扣</span>
+                                {bookInfo.data.discount*1 == 10 ? '无折扣': bookInfo.data.discount}
+                              </p>
+                              <p><span className="price-key letter02">售价</span><span>￥{bookInfo.data.aprice}</span></p>
                             </div>
-                            <div style={{paddingTop: '30px'}}>
-                              <NumberBox maxNumber= {parseInt(100)}
-                                         count={this.state.count}
-                                         addNumber={this.addNumber.bind(this)}
-                                         subNumber={this.subNumber.bind(this)}/>
-                            </div>
-                            <a className="Book-button shop-button" onClick = {this.addBookIntoCars.bind(this)}>加入购物车</a>
-                            <a className="Book-button buy-button" onClick={this.confirmPay.bind(this)}>立即购买</a>
-                            <p style={{marginTop: '20px'}}>
-                              <a className={favoriteStarClass} style={{marginRight: '5px'}} type="star-o" onClick={this.addFavorite.bind(this)}/>
-                              <span className="star-text">{favoriteText}(人气{this.state.favoriteLen})</span>
-                            </p>
+                             <p className="Book-saleNum">库存量: {bookInfo.data.stocks}</p>
+                            <Row>
+                                <Col span="3">销量：{bookInfo.data.saleNumber}</Col>
+                                <Col span="3">评分： {bookInfo.data.scores}</Col>
+                                <Col span="3">收藏： {bookInfo.data.favorite.length}</Col>
+                            </Row>
+                            <p style={{margin: '10px 0'}}>所属分类：{bookInfo.data.typeText}</p>
+                            <p style={{margin: '10px 0'}}>放置区域： {config.bookArea[bookInfo.data.flag]}</p>
+                            <a className="Book-button shop-button" onClick={this.editBookInfo.bind(this)}>前往编辑</a>
                           </div>
                         </div>
                     </div>
                     <div className="clearfix" style={{marginTop : '20px'}}>
-                      <div className="recommend">推荐区</div>
                       <div className="book-detai">
                         <h3  className="BookDetai-blockName">商品详情</h3>
                         <div className="detail-content clearfix">

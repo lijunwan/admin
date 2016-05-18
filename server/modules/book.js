@@ -111,6 +111,8 @@ function uploadPicture(req, res, dir) {
 	})
 }
 Books.addBook = function(req, res) {
+	req.query.scores = 0;
+	req.query.saleNumber = 0;
 	db['bookInfo'].create(req.query, function(error, book) {
 		console.log(error)
 		res.send({data: book});

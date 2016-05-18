@@ -39,6 +39,7 @@ export default class BookForm extends Component {
          stocks: '',//进货量,
          introduce:'',//简介，
          flag: 'none',
+         typeText: '',
       },
       isDisable: true,
       coverFileList: [],
@@ -218,9 +219,18 @@ export default class BookForm extends Component {
       )
     }
   }
-  bookTypeChange(value) {
+  bookTypeChange(value, option) {
     let formValue = __assign({}, this.state.formValue);
+    let flagStr = '';
+    option.map((data, idex)=>{
+        if(idex===0){
+            flagStr += data.label;
+        } else {
+            flagStr += '/' + data.label
+        }
+    })
     formValue.type = value[2];
+    formValue.typeText = flagStr;
     this.setState({
       formValue: formValue,
       bookType: value,
@@ -320,6 +330,12 @@ export default class BookForm extends Component {
             }
         }
     }
+  }
+  redirectHome() {
+    this.props.history.pushState(null,'/index')
+  }
+  redirectBook() {
+    this.props.history.pushState(null, '/book/'+this.props.location.query.bookId)
   }
   resetFormvalue() {
     var keyList = __keys(this.state.formValue);
@@ -599,7 +615,10 @@ export default class BookForm extends Component {
             <Row>
               <Col span="12">
                 <input　className="BookForm-button" type="button"　value="提交" onClick={this.saveBook.bind(this)}/>
-                <input　className="BookForm-button" type="button"　value="返回首页"/>
+                {this.state.isEdit ?
+                 <input　className="BookForm-button" type="button"　value="前往查看" onClick={this.redirectBook.bind(this)}/>
+                :<input　className="BookForm-button" type="button"　value="返回首页" onClick={this.redirectHome.bind(this)}/>
+                }
               </Col>
             </Row>
           </div>
