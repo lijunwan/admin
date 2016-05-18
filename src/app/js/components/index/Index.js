@@ -32,12 +32,15 @@ export default class  Index extends Component{
 	modifyBookInfo(bookId) {
 		this.props.history.pushState(null, '/bookForm?bookId='+bookId);
 	}
+	showBookInfo(bookId) {
+		this.props.history.pushState(null, '/book/'+bookId);
+	}
 	createOperation(obj) {
 		return (
 			<div>
 				<a onClick={this.modifyBookInfo.bind(this, obj['_id'])}>修改</a>|
 				<a onClick={this.showDelModal.bind(this,obj['_id'])}>删除</a>|
-				<a>查看</a>
+				<a onClick={this.showBookInfo.bind(this,obj['_id'])}>查看</a>
 			</div>
 		)
 	}

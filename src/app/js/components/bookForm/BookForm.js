@@ -70,6 +70,9 @@ export default class BookForm extends Component {
                 bookInfo = obj;
             }
         })
+        delete bookInfo.comment;
+        delete bookInfo.evaluation;
+        delete bookInfo.favorite;
         var bookInfoData = __assign({}, this.state.formValue, bookInfo);
         delete bookInfoData.picture;
         console.log(bookInfoData,'====')
