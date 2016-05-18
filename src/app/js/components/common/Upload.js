@@ -29,6 +29,7 @@ export default class  Upload extends Component {
     let imgList = __remove(this.state.imgList.slice(0), function(n,idx) {
       return idx !== index;
     });
+
     this.setState({
       imgList: imgList,
     })
@@ -41,25 +42,27 @@ export default class  Upload extends Component {
         })
       }
   }
+  createImgList() {
+    const list =[];
+    this.state.imgList.map((imgSrc, index)=>{
+        list.push(
+            <div className="Upload-img-wrap" key={index}>
+              <img className="Upload-list-item" src={imgSrc} />
+              <div className="Upload-img-cover">
+                <div className="Upload-img-modal">
+                  <i className="anticon anticon-delete Upload-delete" onClick={this.delImg.bind(this, index)}></i>
+                </div>
+              </div>
+            </div>
+        )
+    })
+    return list;
+  }
   componentDidMount() {
     const list = [];
     if(this.props.isEdit) {
-        this.props.fileList.map((value)=>{
-            if(typeof(value)=== 'string') {
-                list.push(
-                    <div className="Upload-img-wrap" key={list.length}>
-                      <img className="Upload-list-item" src={value} />
-                      <div className="Upload-img-cover">
-                        <div className="Upload-img-modal">
-                          <i className="anticon anticon-delete Upload-delete" onClick={this.delImg.bind(this, list.length)}></i>
-                        </div>
-                      </div>
-                    </div>
-                )
-            }
-        })
         this.setState({
-            imgList: list,
+            imgList: this.props.fileList,
         })
     }
   }
@@ -74,19 +77,7 @@ export default class  Upload extends Component {
     }
     const that = this;
     reader.addEventListener("load",()=>{
-        fileList.map((file, idx)=>{
-            let imgSrc= typeof file === 'string' ? file : reader.result
-            list.push(
-            <div className="Upload-img-wrap" key={idx}>
-              <img className="Upload-list-item" src={imgSrc} />
-              <div className="Upload-img-cover">
-                <div className="Upload-img-modal">
-                  <i className="anticon anticon-delete Upload-delete" onClick={this.delImg.bind(this, idx)}></i>
-                </div>
-              </div>
-            </div>
-            )
-        })
+      list.push(reader.result);
       if(this.props.count) {
           let count = parseInt(this.props.count);
           this.props.changeState(fileList.slice(-count))
@@ -104,30 +95,12 @@ export default class  Upload extends Component {
           }
       }
     }, false);
-    // console.log(uploadInput.files)
-    // var file = uploadInput.files[0];
-    // var reader = new FileReader();
-    // reader.addEventListener("load",()=>{
-    //    this.props.onChange(reader.result);
-    // }, false);
-    // if(file) {
-    //   reader.readAsDataURL(file);
-    // console.log(upLoadForm.onClick);
-    // upLoadForm.submit();
-    // var xhr = new XMLHttpRequest();
-    // var formData = new FormData();
-
-    // xhr.open("post", '/api/user/authorization/headImages', true);
-    // formData.append('file',file);
-    // xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-    // xhr.send(formData);
-    // }
   }
   render() {
     return(
       <div>
         <div className="Upload-item">
-         {this.state.imgList}
+         {this.createImgList()}
         </div>
         <div className="Upload-card">
           <Icon type="plus" />
