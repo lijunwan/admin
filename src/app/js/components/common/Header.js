@@ -20,7 +20,7 @@ export default class Header extends Component {
 					<Link to ="/index"><img src={logoImg} alt="" /></Link>
 					<Menu mode="horizontal">
 							<Menu.Item><Icon type="book" />书籍管理</Menu.Item>
-							<Menu.Item><Icon type="user" />用户管理</Menu.Item>
+							<Menu.Item><Icon type="user" />用户信息</Menu.Item>
 							<Menu.Item><Icon type="bars" />订单管理</Menu.Item>
 							<Menu.Item><Icon type="line-chart" />数据统计</Menu.Item>
 					</Menu>

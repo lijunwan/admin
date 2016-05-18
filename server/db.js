@@ -110,18 +110,18 @@ db.once('open', function (callback) {
 	// 	cover:String //bookInfo 数据库
 	// 	// flag 标志 bookInfo 降价 促销 缺货 正常
 	// });
-	// var orderSchema = new Schema({
-	// 	time: Date,//订单成交时间
-	//   aprice: Number,
-	// 	cover: String,
-	// 	bookName: String,
-	// 	sumMon: Number, //实际金额
-	// 	userId: String, //用户id
-	//   address: String,//收货地址
-	//   orderStatus: String,//unpaied paided/unsend send/unrecive recive
-	// 	bookId: String,
-	// 	count: Number,
-	// });
+	var orderSchema = new Schema({
+		time: Date,//订单成交时间
+	  	aprice: Number,
+		cover: String,
+		bookName: String,
+		sumMon: Number, //实际金额
+		userId: String, //用户id
+	  	address: String,//收货地址
+	  	orderStatus: String,//unpaied paided/unsend send/unrecive recive
+		bookId: String,
+		count: Number,
+	});
 	// var saleRecordsSchema = new Schema({
 	// 	bookId: String,
 	// 	userId: String,
@@ -235,7 +235,7 @@ db.once('open', function (callback) {
 	// dataModel['bookNew'] = db.model('bookNew', bookNewSchema, 'bookNew');
 	// dataModel['shopCart'] = db.model('shopCart', shopCartSchema, 'shopCart');
 	// dataModel['favorite'] = db.model('favorite', favoriteSchema, 'favorite');
-	// dataModel['order'] = db.model('order', orderSchema, 'order');
+	dataModel['order'] = db.model('order', orderSchema, 'order');
 	// dataModel['saleRecords'] = db.model('saleRecords', saleRecordsSchema, 'saleRecords');
 	dataModel['bookMenu'] = db.model('bookMen', bookMenuSchema, 'bookMen');
 	// dataModel['bookMenuConfig'] = db.model('bookMenuConfig', bookMenuConfigSchema, 'bookMenuConfig');
