@@ -21,7 +21,7 @@ export default class  Upload extends Component {
         let delfileList = this.props.delFileList.slice(0);
         let delItem = this.props.fileList[index];
         console.log('delItem',delItem, fileList, this.props.fileList);
-        if(typeof delItem[0] === 'string') {
+        if(typeof delItem === 'string') {
             delfileList.push(delItem);
             this.props.delFileHandel(delfileList);
         }
@@ -74,16 +74,19 @@ export default class  Upload extends Component {
     }
     const that = this;
     reader.addEventListener("load",()=>{
-        list.push(
-        <div className="Upload-img-wrap" key={list.length}>
-          <img className="Upload-list-item" src={reader.result} />
-          <div className="Upload-img-cover">
-            <div className="Upload-img-modal">
-              <i className="anticon anticon-delete Upload-delete" onClick={this.delImg.bind(this, list.length)}></i>
+        fileList.map((file, idx)=>{
+            let imgSrc= typeof file === 'string' ? file : reader.result
+            list.push(
+            <div className="Upload-img-wrap" key={idx}>
+              <img className="Upload-list-item" src={imgSrc} />
+              <div className="Upload-img-cover">
+                <div className="Upload-img-modal">
+                  <i className="anticon anticon-delete Upload-delete" onClick={this.delImg.bind(this, idx)}></i>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      )
+            )
+        })
       if(this.props.count) {
           let count = parseInt(this.props.count);
           this.props.changeState(fileList.slice(-count))

@@ -84,6 +84,14 @@ function uploadPicture(req, res, dir) {
 			var pathList = files.file.path.split('/');
 			list.push('/book/'+ req.query.bookId + '/'+pathList[pathList.length-1]);
 		}
+		if(delfileList.length>0) {//删除文件
+			delfileList.map((filePath)=>{
+				var delPath = path.join(__dirname, '../../../graduate/server/images'+filePath);
+				fs.unlink(delPath, function(error){
+					console.log('删除');
+				})
+			})
+		}
 		db['bookInfo'].findById(req.query.bookId, function(error, data){
 			console.log(data.picture, '======')
 			var picture = data.picture.slice(0);
