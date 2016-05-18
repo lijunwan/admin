@@ -484,7 +484,7 @@ export default class BookForm extends Component {
                 折
               </Col>
               <Col span="2">
-                <Checkbox onChange={this.checkBoxHandle.bind(this)} value={!this.state.isDisable}/>
+                <Checkbox onChange={this.checkBoxHandle.bind(this)} checked={this.state.isDisable}/>
                 <span style={{margin: '0 5px'}}>无折扣</span>
               </Col>
               <Col span="2">
