@@ -1,5 +1,6 @@
 var db = require('../db');
 var  __pick = require('lodash/pick');
+var __remove = require('lodash/remove');
 var GR = require('../helper');
 var formidable = require('formidable');
 var fs = require('fs');
@@ -65,6 +66,8 @@ Books.editBookInfo = function(req, res) {
 	})
 }
 function uploadPicture(req, res, dir) {
+	console.log(JSON.parse(req.query.delfileList));
+	var delfileList = JSON.parse(req.query.delfileList);
 	var form = new formidable.IncomingForm();   //创建上传表单
     form.uploadDir = dir;	 //设置上传目录
     form.keepExtensions = true;	 //保留后缀
@@ -83,9 +86,17 @@ function uploadPicture(req, res, dir) {
 		}
 		db['bookInfo'].findById(req.query.bookId, function(error, data){
 			console.log(data.picture, '======')
-			list.map(function(url){
-				data.picture.push(url);
+			var picture = data.picture.slice(0);
+	 		delfileList.map(function(delUrl){
+			 	picture = __remove(data.picture.slice(0), function(pic){
+					return pic !== delUrl;
+				})
 			})
+			console.log('remove---',picture)
+			list.map(function(url){
+				picture.push(url);
+			})
+			data.picture = picture;
 			data.save();
 			res.send({data: data.picture})
 		})

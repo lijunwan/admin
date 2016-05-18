@@ -297,7 +297,6 @@ export default class BookForm extends Component {
 
         var xhr1 = new XMLHttpRequest();
         var formData1 = new FormData();
-        xhr1.open("post", '/api/book/picture?bookId='+ bookInfo['_id'], true);
         console.log(this.state.pictureList,'=====');
         let flag = false;
         this.state.pictureList.map((file)=>{
@@ -307,6 +306,8 @@ export default class BookForm extends Component {
             }
         })
         if(flag) {
+            let delfileList = JSON.stringify(this.state.delFileList);
+            xhr1.open("post", '/api/book/picture?bookId='+ bookInfo['_id'] + '&delfileList=' + delfileList, true);
             xhr1.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
             xhr1.send(formData1);
             message.success('保存成功！');
@@ -347,6 +348,11 @@ export default class BookForm extends Component {
         formValue: formValue,
     })
   }
+  delFileHandel(delFileList){
+    this.setState({
+        delFileList: delFileList
+    })
+  }
   render() {
     const coverProps = {
       action: '/api/book/uploadCover',
@@ -376,7 +382,12 @@ export default class BookForm extends Component {
                 <div className="formKey reqKey">图片(4张)</div>
               </Col>
               <Col span="20">
-                <Upload listType="picture-card" count="4" fileList={this.state.pictureList} changeState={this.changePicture.bind(this)} isEdit={this.state.isEdit}>
+                <Upload count="4"
+                        fileList={this.state.pictureList}
+                        changeState={this.changePicture.bind(this)}
+                        isEdit={this.state.isEdit}
+                        delFileList={this.state.delFileList}
+                        delFileHandel={this.delFileHandel.bind(this)}>
                 </Upload>
               </Col>
             </Row>

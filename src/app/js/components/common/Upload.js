@@ -2,6 +2,7 @@ import React, { Component, PropTypes} from 'react';
 import {Icon} from 'antd';
 import '../../../css/common/upload.css';
 import __remove from 'lodash/remove';
+import __assign from 'lodash/assign';
 var uploadInput, upLoadForm;
 export default class  Upload extends Component {
   constructor(props) {
@@ -12,12 +13,20 @@ export default class  Upload extends Component {
     }
   }
   delImg(index) {
-    let fileList = __remove(this.props.fileList, function(n,idx) {
-       console.log(index ,idx,'index')
+    let preFileList = this.props.fileList.slice(0);
+    let fileList = __remove(preFileList, function(n,idx) {
       return idx !== index;
     });
-    let imgList = __remove(this.state.imgList, function(n,idx) {
-       console.log(index ,idx,'index')
+    if(this.props.delFileList) {
+        let delfileList = this.props.delFileList.slice(0);
+        let delItem = this.props.fileList[index];
+        console.log('delItem',delItem, fileList, this.props.fileList);
+        if(typeof delItem[0] === 'string') {
+            delfileList.push(delItem);
+            this.props.delFileHandel(delfileList);
+        }
+    }
+    let imgList = __remove(this.state.imgList.slice(0), function(n,idx) {
       return idx !== index;
     });
     this.setState({
@@ -35,7 +44,6 @@ export default class  Upload extends Component {
   componentDidMount() {
     const list = [];
     if(this.props.isEdit) {
-        console.log(this.props.fileList, '----12');
         this.props.fileList.map((value)=>{
             if(typeof(value)=== 'string') {
                 list.push(
@@ -80,8 +88,17 @@ export default class  Upload extends Component {
           let count = parseInt(this.props.count);
           this.props.changeState(fileList.slice(-count))
           that.setState({
-          imgList: list.slice(-count),
-        })
+              imgList: list.slice(-count),
+          })
+          if(this.props.delFileList) {
+            let delfileList = this.props.delFileList.slice(0);
+            if(fileList.length > count) {
+                if(typeof fileList[0] === 'string') {
+                    delfileList.push(fileList[0]);
+                    this.props.delFileHandel(delfileList);
+                }
+            }
+          }
       }
     }, false);
     // console.log(uploadInput.files)
