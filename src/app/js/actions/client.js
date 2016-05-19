@@ -39,8 +39,7 @@ export function logOut() {
 }
 export function getUserList() {
   return dispatch => {
-    HttpRequest.get('/api/user/userList')
-      .query(params)
+    HttpRequest.get('/api/user/getUserList')
       .end(function(err,resp){
         dispatch({
           type: GET_USER_LIST,

@@ -13,8 +13,8 @@ function Users (user) {
 }
 module.exports = Users;
 Users.getUserList = function (req, res) {
-	db['users'].find({}, function(error, data){
-		res.send({data: data});
+	db['users'].find({}).select('-password').exec(function(err, data) {
+		res.send({data: data})
 	})
 }
 // Users.checkLogin = function checkLogin(req,res){

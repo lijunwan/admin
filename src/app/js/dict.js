@@ -25,7 +25,7 @@ var config = {
 		birthday:'生日',//生日
     },
     orderInfo: {
-        '_id':'订单ID'
+        '_id':'订单ID',
         time: '创建时间',//订单成交时间
         cover: '封面',
         bookName: '书名',
