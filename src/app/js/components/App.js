@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as clientAC from '../actions/client';
 import * as bookAC from '../actions/book';
-// import * as orderAC from '../actions/order';
+import * as orderAC from '../actions/order';
 import Router from 'react-router';
 import Header from '../components/common/Header';
 import '../../css/normalize.css';
@@ -14,7 +14,7 @@ var RouteHandler = Router.RouteHandler;
 
 export default class App extends Component{
   componentDidMount() {
-    console.log("this.props",this.props)
+    console.log("this.props",this.props.order.toJS())
     this.props.clientBoundAC.getLog();
   }
   render() {
@@ -47,8 +47,8 @@ export default class App extends Component{
 function mapStateToProps(state) {
   return {
       client: state.client,
-       book: state.book,
-      // order: state.order,
+      book: state.book,
+      order: state.order,
   };
 }
 
@@ -56,7 +56,7 @@ function mapDispatchToProps(dispatch) {
       return {
         clientBoundAC: bindActionCreators(clientAC, dispatch),
         bookBoundAC: bindActionCreators(bookAC, dispatch),
-        // orderBoundAC: bindActionCreators(orderAC, dispatch),
+        orderBoundAC: bindActionCreators(orderAC, dispatch),
       }
 }
 
