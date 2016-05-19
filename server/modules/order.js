@@ -47,6 +47,15 @@ Order.getOrderInfo = function(req, res) {
 		})
 	})
 }
+Order.getOrderUnsend = function(req, res) {
+	db['order'].find({orderStatus: 'UNSEND'}).select('_id').exec(function(error, data){
+		const list = [];
+		data.map(function(obj) {
+			list.push(obj['_id'])
+		})
+		res.send({data: list});
+	})
+}
 function getKeyValueList(list,key) {
 	const result = [];
 	list.map(function(item){

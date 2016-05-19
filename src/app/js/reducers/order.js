@@ -1,8 +1,9 @@
-import {GET_ORDER_LIST,GET_ORDER_INFO} from '../actions/order';
+import {GET_ORDER_LIST,GET_ORDER_INFO,GET_UNSEND_ORDER} from '../actions/order';
 import Immutable from 'immutable';
 const initialState = {
     'orderList': {},
     'orderInfo':{},
+    'unsendOrder': {},
 }
 export default function (state = Immutable.fromJS(initialState), action) {
 	switch (action.type) {
@@ -10,6 +11,8 @@ export default function (state = Immutable.fromJS(initialState), action) {
 			return state.set('orderList',action.data);
         case GET_ORDER_INFO:
 			return state.set('orderInfo',action.data);
+        case GET_UNSEND_ORDER:
+            return state.set('unsendOrder', action.data)
 		default:
 			return state;
 	}

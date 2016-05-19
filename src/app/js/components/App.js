@@ -10,12 +10,43 @@ import '../../css/normalize.css';
 import 'antd/lib/index.css';
 import logoImg from '../../images/logo.jpg';
 import Search from './common/Search';
+import __difference from 'lodash/difference';
+import {message} from 'antd';
 var RouteHandler = Router.RouteHandler;
-
+let myAudio;
 export default class App extends Component{
   componentDidMount() {
     console.log("this.props",this.props.order.toJS())
+    var that = this;
+    myAudio = document.getElementById('myAudio');
+    setInterval(that.getUnsendOrder.bind(that), 6000);
     this.props.clientBoundAC.getLog();
+  }
+  componentWillReceiveProps(nextProps) {
+    let orderList = nextProps.order.toJS().unsendOrder.data;
+    if(orderList) {
+        if(localStorage.getItem('unsendOrder')){
+            let localList = JSON.parse(localStorage.getItem('unsendOrder'));
+            let newList = __difference(orderList, localList);
+            if(newList.length > 0){
+                message.success('您有新的订单');
+                if(myAudio) {
+                    myAudio.play();
+                }
+            }
+            localStorage.setItem('unsendOrder', JSON.stringify(orderList));
+        } else {
+            message.success('您有新的订单');
+            if(myAudio) {
+                myAudio.play();
+            }
+            localStorage.setItem('unsendOrder', JSON.stringify(orderList));
+        }
+    }
+  }
+  getUnsendOrder() {
+    console.log(this.props,'///')
+    this.props.orderBoundAC.getOrderUnsend();
   }
   render() {
       return (
@@ -36,7 +67,10 @@ export default class App extends Component{
                   {React.cloneElement(this.props.children, this.props)}
               </div>
             }
-
+            <audio id="myAudio">
+              <source src="message.mp3"/>
+              Your browser does not support the audio tag.
+            </audio>
             {/*<Footer />*/}
           </div>
       );
