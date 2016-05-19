@@ -52,7 +52,7 @@ export default class SimpleTable extends Component {
                     )
                 } else {
                     cols.push(
-                        <td key={index}>{row[col.key]}</td>
+                        <td key={index}>{col.handle ? col.handle(row[col.key]) : row[col.key]}</td>
                     )
                 }
             })

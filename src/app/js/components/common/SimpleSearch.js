@@ -11,7 +11,7 @@ export default class Search extends Component {
     render() {
         return(
             <div className="Search">
-                <input placeholder={this.props.placeholder}
+                <input style={{padding: '5px 10px'}} placeholder={this.props.placeholder}
                        onChange = {this.onChangeHandel.bind(this)}
                        value={this.props.searchKey}/>
                 <a href="javascript:;" onClick={this.props.onClick}><i className="fa fa-search"></i></a>
