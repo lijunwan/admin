@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import SimpleTable from '../common/SimpleTable';
-import { Breadcrumb} from 'antd';
+import { Breadcrumb, Icon} from 'antd';
 export default class User extends Component{
     componentDidMount() {
     	this.props.clientBoundAC.getUserList();
@@ -26,9 +26,9 @@ export default class User extends Component{
 		}
         return(
         	<div>
-        		<p　style={{padding: '10px 8px', fontWeight: 'bold'}}>用户管理</p>
+        		<h1 className='title'><Icon type="user" />用户管理</h1>
           		<p style={{padding: '10px 8px'}}>已有
-          		<span style={{fontWeight: 'bold', color: '#007CB6'}}>{userListData.length}</span>人注册为用户</p>	
+          		<span style={{fontWeight: 'bold', color: '#007CB6'}}>{userListData.length}</span>人注册为用户</p>
         		<SimpleTable config={config} />
         	</div>
         )

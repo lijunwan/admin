@@ -80,7 +80,9 @@ export default class SimpleTable extends Component {
                         {this.createBody()}
                     </tbody>
                 </table>
-                <Pagination total = {this.state.actData.length} current={this.state.curentPage} pageSize = {this.state.size}  onChange = {this.changePage.bind(this)}/>
+                <div style={{margin: '10px 0'}}>
+                    <Pagination total = {this.state.actData.length} current={this.state.curentPage} pageSize = {this.state.size}  onChange = {this.changePage.bind(this)}/>
+                </div>
             </div>
         )
     }

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import SimpleTable from '../common/SimpleTable';
-import { Radio, Row, Col} from 'antd';
+import { Radio, Row, Col, Icon} from 'antd';
 import echarts from 'echarts';
 const RadioGroup = Radio.Group;
 let saleChart;
@@ -24,6 +24,7 @@ export default class  Statistics extends Component{
                 orgData: bookList,
             })
         }
+        this.createCharts()
 
     }
     getKeyData(dataList,keyName,keyNum) {
@@ -154,7 +155,7 @@ export default class  Statistics extends Component{
 		}
         return (
             <div>
-                <h2 style={{margin: '20px 0'}}>数据统计</h2>
+                <h1 className="title"><Icon type="line-chart" />数据统计</h1>
                 <RadioGroup onChange={this.changeSortKey.bind(this)} value={this.state.sortKey}>
                     <Radio key="a" value="default">默认</Radio>
                     <Radio key="b" value="saleNumber">销量</Radio>
@@ -177,7 +178,6 @@ export default class  Statistics extends Component{
                         <div id="favorite" style={{height: '300px', width: '300px'}}></div>
                     </Col>
                 </Row>
-                {this.createCharts()}
             </div>
         )
     }
