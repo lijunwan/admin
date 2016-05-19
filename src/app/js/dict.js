@@ -10,6 +10,13 @@ var config = {
 		'flag': '书籍宣传区',
         'operation': '操作',
 	},
+    bookStatic: {
+        '_id': 'ID',
+        'bookName': '书名',
+        'saleNumber': '销量',
+        'scores': '评分',
+        'favorite': '收藏量',
+    },
     bookArea: {
         'none': '无',
         'new': '新书上架',
