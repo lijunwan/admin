@@ -148,6 +148,9 @@ Books.getBookInfo = function(req, res) {
 	db['bookInfo'].findById(req.query.bookId, function(error, data){
 		if(data) {
 			res.send({data :data});
+		} else {
+			res.statusCode = '404'
+			res.send({errorCode: '404101',message: '未找到相关书籍'})
 		}
 	})
 }

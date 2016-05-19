@@ -21,6 +21,8 @@ app.get('/api/book/delBook', Books.delBook);
 app.get('/api/user/getUserList', User.getUserList);
 app.get('/api/order/orderList', Order.getOrderList);
 app.get('/api/order/searchOrder', Order.searchOrder);
+app.get('/api/order/sendOrde', Order.sendOrde);
+app.get('/api/order/getOrderInfo', Order.getOrderInfo);
 // app.get('/api/user/phone',User.checkPhone);
 // app.post('/api/user/register',User.createUser);
 // app.del('/api/user/logout',User.logout);

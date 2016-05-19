@@ -186,6 +186,9 @@ export default class  Book extends Component{
                 </div>
             )
         }
+        if(bookInfo.errorCode) {
+            return(<div className="Book-noreco">书籍已被删除</div>)
+        }
         return (<div>...</div>)
     }
 }

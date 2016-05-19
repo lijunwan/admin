@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import SimpleTable from '../common/SimpleTable';
-import {Icon, Row, Col, Select} from 'antd';
+import {Icon, Row, Col, Select,Modal} from 'antd';
 const Option = Select.Option;
 import SimpleSearch from '../common/SimpleSearch';
 import moment from 'moment';
@@ -12,6 +12,8 @@ export default class  Order extends Component{
 			filterKey: 'ALL',
 			currentData: [],
 			orgData:[],
+			isShowSendModal: false,
+			sendOrderId: '',
 		}
 	}
 	componentDidMount() {
@@ -19,12 +21,35 @@ export default class  Order extends Component{
 	}
 	componentWillReceiveProps(nextProps) {
 		this.setState({
-			currentData: nextProps.order.toJS().orderList.data,
+			currentData: this.filterOrder(nextProps.order.toJS().orderList.data, this.state.filterKey),
 			orgData: nextProps.order.toJS().orderList.data,
 		})
 	}
-	createOperation() {
-
+	showSendModal(orderId) {
+		this.setState({
+			isShowSendModal: true,
+			sendOrderId: orderId,
+		})
+	}
+	showOrderInfo(orderId) {
+		this.props.history.pushState(null, '/orderDetail?orderId='+orderId);
+	}
+	createOperation(obj) {
+		switch (obj.orderStatus) {
+			case 'UNSEND':
+				return (
+				  <div>
+				    <p><a onClick={this.showSendModal.bind(this, obj['_id'])}>发货</a></p>
+					<p><a onClick={this.showOrderInfo.bind(this,obj['_id'])}>查看订单</a></p>
+				  </div>
+			  	)
+			default:
+				return (
+				  <div>
+					<p><a onClick={this.showOrderInfo.bind(this,obj['_id'])}>查看订单</a></p>
+				  </div>
+				)
+		}
 	}
 	changeHandle(key) {
 		this.setState({
@@ -39,18 +64,34 @@ export default class  Order extends Component{
 	}
 	changeFilterKey(key) {
 		let currentData = [];
+		currentData = this.filterOrder(this.state.orgData, key);
+		this.setState({
+			filterKey: key,
+			currentData: currentData
+		})
+	}
+	filterOrder(data, key) {
+		let currentData = [];
 		if(key=== 'ALL') {
-			currentData = this.state.orgData;
+			currentData = data;
 		} else {
-			this.state.orgData.map((obj)=>{
+			data.map((obj)=>{
 				if(obj.orderStatus == key) {
 					currentData.push(obj);
 				}
 			})
 		}
+		return currentData;
+	}
+	sendOrderHandle() {
+		this.props.orderBoundAC.sendOrde({orderId: this.state.sendOrderId});
 		this.setState({
-			filterKey: key,
-			currentData: currentData
+			isShowSendModal: false,
+		})
+	}
+	cancelHandle() {
+		this.setState({
+			isShowSendModal: false,
 		})
 	}
 	render(){
@@ -101,6 +142,12 @@ export default class  Order extends Component{
 				</Row>
 				</div>
 				<SimpleTable config={config} />
+				<Modal title="信息提示框"
+						visible = {this.state.isShowSendModal}
+						onOk={this.sendOrderHandle.bind(this)}
+						onCancel={this.cancelHandle.bind(this)}>
+					<p>是否发货?</p>
+				</Modal>
 			</div>
 	  )
 	}
