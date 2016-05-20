@@ -64,7 +64,6 @@ export default class BookForm extends Component {
             isEdit: true,
         })
         let bookList = JSON.parse(localStorage.getItem('bookList'));
-        console.log(bookList, '???');
         let bookInfo = {}
         bookList.map((obj)=>{
             if(obj['_id'] === this.props.location.query.bookId) {
@@ -76,7 +75,6 @@ export default class BookForm extends Component {
         delete bookInfo.favorite;
         var bookInfoData = __assign({}, this.state.formValue, bookInfo);
         delete bookInfoData.picture;
-        console.log(bookInfoData,'====')
         var bookType = this.convertBookType(bookInfoData.type);
         var price = this.convertPrice(bookInfoData.price);
         var isDisable = true;
@@ -101,7 +99,6 @@ export default class BookForm extends Component {
         jiao: 0,
         fen:0,
     };
-    console.log(value, '????');
     if(value) {
         obj.yuan = value.split('.')[0];
         obj.jiao = value.split('.')[1].substring(0,1);
@@ -266,7 +263,6 @@ export default class BookForm extends Component {
     })
   }
   saveBook() {
-    console.log(this.state.formValue);
     let keyList = ['bookName', 'author', 'pubHouse', 'pubDate', 'price', 'discount', 'aprice', 'type', 'stocks'];
     let flag = true;
     keyList.map((key)=>{
@@ -295,10 +291,11 @@ export default class BookForm extends Component {
     }
   }
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps.book.toJS().bookInfo.data, '===')
+    console.log(nextProps.book.toJS().bookInfo.data, '===123')
     if(nextProps.book.toJS().bookInfo.data) {
+        console.log('为什么不弹窗')
+        message.success('保存成功！');
         const bookInfo = nextProps.book.toJS().bookInfo.data;
-        console.log(typeof(this.state.coverFileList[0]),'------');
         if(typeof(this.state.coverFileList[0]) !== 'string') {
             var xhr = new XMLHttpRequest();
             var formData = new FormData();
@@ -310,7 +307,6 @@ export default class BookForm extends Component {
 
         var xhr1 = new XMLHttpRequest();
         var formData1 = new FormData();
-        console.log(this.state.pictureList,'=====');
         let flag = false;
         this.state.pictureList.map((file)=>{
             if(typeof(file) != 'string') {
@@ -323,12 +319,12 @@ export default class BookForm extends Component {
             xhr1.open("post", '/api/book/picture?bookId='+ bookInfo['_id'] + '&delfileList=' + delfileList, true);
             xhr1.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
             xhr1.send(formData1);
-            message.success('保存成功！');
             if(!this.state.isEdit) {
                 this.resetFormvalue();
                 this.props.bookBoundAC.clearBookInfo();
             }
         }
+        this.props.bookBoundAC.clearBookInfo();
     }
   }
   redirectHome() {
@@ -360,7 +356,6 @@ export default class BookForm extends Component {
     })
   }
   onChangeRadio(evt) {
-      console.log(evt.target.value);
     let formValue = __assign({}, this.state.formValue);
     formValue.flag = evt.target.value;
     this.setState({
@@ -378,7 +373,6 @@ export default class BookForm extends Component {
       onChange: this.handleChangeCover,
       listType: "picture-card",
     }
-    console.log(this.state.pictureList, '！！！！')
     return(
       <div className="bookForm">
         <div className="breadcrumb">
