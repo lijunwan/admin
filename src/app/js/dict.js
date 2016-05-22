@@ -10,6 +10,13 @@ var config = {
 		'flag': '书籍宣传区',
         'operation': '操作',
 	},
+    bookStatic: {
+        '_id': 'ID',
+        'bookName': '书名',
+        'saleNumber': '销量',
+        'scores': '评分',
+        'favorite': '收藏量',
+    },
     bookArea: {
         'none': '无',
         'new': '新书上架',
@@ -36,6 +43,14 @@ var config = {
         address: '收货地址',//收货地址
         orderStatus: '状态',//unpaied paided/unsend send/unrecive recive
         operation: '操作',
+    },
+    orderStatus: {
+        'UNPAY': '未支付',
+        'UNSEND': '未发货',
+        'CLOSED': '已关闭',
+        'UNCONFIRM': '未收货',
+        'UNEVALUATION': '未评价',
+        'SUCCESS': '交易成功',
     }
 }
 module.exports = config;

@@ -6,7 +6,10 @@ import Index from '../components/index/Index';
 import Book from '../components/book/Book';
 import User from '../components/user/User';
 import Login from '../components/login/Login';
-import BookForm from '../components/bookForm/BookForm'
+import BookForm from '../components/bookForm/BookForm';
+import Order from '../components/order/Order';
+import OrderDetail from '../components/order/OrderDetail';
+import Statistics from '../components/statistics/Statistics';
 var Router = require('react-router');
 var Route = Router.Route;
 var NotFoundRoute = Router.NotFoundRoute;
@@ -21,7 +24,9 @@ var routes = (
       <Route name="login" path='/login' component={Login} />
       <Route name="bookForm" path='/bookForm' component={BookForm}/>
       <Route name="user" path='/user' component={User}/>
-
+      <Route name="order" path='/order' component={Order}/>
+      <Route name="orderDetail" path='/orderDetail' component={OrderDetail}/>
+      <Route name="statistics" path='/statistics' component={Statistics}/>
       <Redirect from="/" to="index" />
       {/*<NotFoundRoute handler={RouteNotFound} />*/}
     </Route>

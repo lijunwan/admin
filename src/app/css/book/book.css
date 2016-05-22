@@ -190,3 +190,9 @@
     text-align: center;
     padding: 5px 0;
 }
+.Book-noreco {
+    text-align: center;
+    padding: 10px 0;
+    background: #E9E9E9;
+    margin-top: 50px;
+}

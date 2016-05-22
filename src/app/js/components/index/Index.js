@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import logoImg from '../../../images/logo.jpg';
 import '../../../css/index.css';
-import {Menu,Icon,Modal} from 'antd';
+import {Menu,Icon,Modal,Radio, Row, Col} from 'antd';
 import SimpleTable from '../common/SimpleTable';
 import Search from '../common/Search';
-
+const RadioGroup = Radio.Group;
 export default class  Index extends Component{
 	constructor(props){
 		super(props);
@@ -12,6 +12,9 @@ export default class  Index extends Component{
 			searchType: 'id',
 			isShowDelModal: false,
 			delBookId: '',
+			filterKey: 'all',
+			currentData: [],
+			orgData: [],
 		}
 	}
 	componentWillMount() {
@@ -26,7 +29,24 @@ export default class  Index extends Component{
 		const bookList = nextProps.book.toJS().bookList.data;
 		if(bookList){
 			const bookListData = JSON.stringify(bookList);
-			localStorage.setItem('bookList', bookListData)
+			localStorage.setItem('bookList', bookListData);
+			this.setState({
+				currentData: this.filterData(bookList, this.state.filterKey),
+				orgData: bookList,
+			})
+		}
+	}
+	filterData(dataList, filterKey) {
+		if(filterKey === 'all') {
+			return dataList;
+		} else {
+			var list = [];
+			dataList.map((obj)=>{
+				if(obj.flag === filterKey) {
+					list.push(obj);
+				}
+			});
+			return list;
 		}
 	}
 	modifyBookInfo(bookId) {
@@ -61,6 +81,13 @@ export default class  Index extends Component{
 			isShowDelModal: false,
 		})
 	}
+	onChangeRadio(evt) {
+		const filterKey = evt.target.value;
+		this.setState({
+			filterKey: filterKey,
+			currentData: this.filterData(this.state.orgData, filterKey),
+		})
+	}
 	render(){
 		if(!this.props.book.toJS().bookList.data) {
 			return(
@@ -79,16 +106,28 @@ export default class  Index extends Component{
 				{key: 'flag', width: '0.1'},
 				{key: 'operation', width: '0.1', handleBlock: this.createOperation.bind(this)},
 			],
-			body: this.props.book.toJS().bookList.data,
+			body: this.state.currentData,
 			dict: 'bookInfo',
 		}
 		return(
 			<div className="index">
 				<h1 className="title"><Icon type="book" />书籍管理</h1>
-				<a onClick={this.redirectBookForm.bind(this)}>添加书籍</a>
-				<div style={{margin: '50px 0'}}>
-				<Search {...this.props}/>
-				</div>
+				<Row style={{margin: '50px 0'}}>
+					<Col span="10">
+						<Search {...this.props}/>
+					</Col>
+					<Col span="2">
+						<a onClick={this.redirectBookForm.bind(this)}>添加书籍</a>
+					</Col>
+					<Col span="10">
+						<RadioGroup onChange={this.onChangeRadio.bind(this)} value={this.state.filterKey}>
+							<Radio key="a" value="all">全部</Radio>
+							<Radio key="b" value="new">新书上架</Radio>
+							<Radio key="c" value="onsale">最新优惠</Radio>
+							<Radio key="d" value="extend">推广商品</Radio>
+					  	</RadioGroup>
+					</Col>
+				</Row>
 				<SimpleTable config={config} />
 				<Modal title="信息确认框" visible={this.state.isShowDelModal}
 				  onOk={this.delBook.bind(this)} onCancel={this.handleCancel.bind(this)}>

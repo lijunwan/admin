@@ -63,6 +63,7 @@ db.once('open', function (callback) {
 	  	orderStatus: String,//unpaied paided/unsend send/unrecive recive
 		bookId: String,
 		count: Number,
+		payTime: Date,//支付时间
 	});
 	// var saleRecordsSchema = new Schema({
 	// 	bookId: String,
