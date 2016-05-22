@@ -26,29 +26,6 @@ db.once('open', function (callback) {
 		name: String,//真实姓名
 		ShippingAddress:[],//收货地址s
 	});
-	// var shopCartSchema = new Schema({
-	// 	bookId: String,//书的id
-	// 	count: Number,//数量
-	// 	userId: String, //用户ID
-	// 	aprice: Number,//售价
-	// 	//sumMon: Number, //金额
-	// 	bookName: String,
-	// 	cover: String,
-	// })
-	// //暂时不用
-	// var logSchema = new Schema({
-	// 	id:String,
-	// 	phone:String,
-	// 	userName:String,
-	// 	lastTime:Date,
-	// });
-	// var baseInfoSchema = new Schema({
-	// 	sex:Number,//性别 1 男 2 女 0 其他
-	// 	birthday:String,//生日
-	// 	headImg:String,//头像 保存图片的地址
-	// 	name: String,//真实姓名
-	// 	ShippingAddress:[],//收货地址
-	// });
 	var bookInfoSchema = new Schema({
 		bookName:String,//书名
 		author:String,//作者
@@ -75,41 +52,6 @@ db.once('open', function (callback) {
 		evaluation:[],//评介
 		typeText: String,
 	});
-	// //折扣书籍
-	// var bookOnSaleSchema = new Schema ({
-	// 	bookName:String,//书名
-	// 	author:String,//作者
-	// 	price: Number,//定价
-	// 	discount: Number,//折扣
-	// 	aprice: Number,
-	// 	cover:String,//封面 保存 照片位置
-	// 	detail: String,
-	// });
-	// //新书上架
-	// var bookNewSchema = new Schema ({
-	// 	bookName:String,//书名
-	// 	author:String,//作者
-	// 	price: Number,//定价
-	// 	discount: Number,//折扣
-	// 	aprice: Number,
-	// 	cover:String,//封面 保存 照片位置
-	// 	detail: String,
-	// });
-	// var bookClassSchema = new Schema({
-	// 	flag:String,//标志
-	// 	name:String,//分类的名字``
-	// 	children:[],
-	// });
-	// var favoriteSchema = new Schema({
-	// 	time: Date,
-	// 	bookId: String,
-	// 	userId: String,
-	// 	collectPrice: Number,//收藏夹
-	// 	aprice:Number, //此时的价格 bookInfo 数据库
-	// 	bookName: String,// bookInfo 数据库
-	// 	cover:String //bookInfo 数据库
-	// 	// flag 标志 bookInfo 降价 促销 缺货 正常
-	// });
 	var orderSchema = new Schema({
 		time: Date,//订单成交时间
 	  	aprice: Number,
