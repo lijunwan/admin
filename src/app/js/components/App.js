@@ -19,7 +19,7 @@ export default class App extends Component{
     console.log("this.props",this.props.order.toJS())
     var that = this;
     myAudio = document.getElementById('myAudio');
-    setInterval(that.getUnsendOrder.bind(that), 6000);
+    setInterval(that.getUnsendOrder.bind(that), 60000);
     this.props.clientBoundAC.getLog();
   }
   componentWillReceiveProps(nextProps) {

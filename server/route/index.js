@@ -24,6 +24,7 @@ app.get('/api/order/searchOrder', Order.searchOrder);
 app.get('/api/order/sendOrde', Order.sendOrde);
 app.get('/api/order/getOrderInfo', Order.getOrderInfo);
 app.get('/api/order/unsendOrder', Order.getOrderUnsend);
+app.get('/api/order/statistc', Order.orderStatis);
 // app.get('/api/user/phone',User.checkPhone);
 // app.post('/api/user/register',User.createUser);
 // app.del('/api/user/logout',User.logout);

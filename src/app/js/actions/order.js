@@ -2,6 +2,7 @@ export const GET_ORDER_LIST = 'GET_ORDER_LIST';
 export const SEARCH_ORDER = 'SEARCH_ORDER';
 export const GET_ORDER_INFO = 'GET_ORDER_INFO';
 export const GET_UNSEND_ORDER = 'GET_UNSEND_ORDER';
+export const GET_ORDER_STATIS = 'GET_ORDER_STATIS';
 import HttpRequest from 'superagent';
 import {message} from 'antd';
 export function getOrderList () {
@@ -62,6 +63,18 @@ export function getOrderUnsend (params) {
           type: GET_UNSEND_ORDER,
           data: resp.body
 	  });
+    });
+  };
+}
+export function getOrderStatistics(params) {
+  return dispatch => {
+    HttpRequest.get('/api/order/statistc')
+      .query(params)
+      .end(function(err,resp){
+      dispatch({
+        type: GET_ORDER_STATIS,
+        data: resp.body
+      });
     });
   };
 }

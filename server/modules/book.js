@@ -61,6 +61,8 @@ Books.addBookPicture = function(req, res) {
 Books.editBookInfo = function(req, res) {
 	var id = req.query['_id'];
 	delete req.query._id;
+	delete req.query.saleNumber;
+	delete req.query.scores;
 	db['bookInfo'].findOneAndUpdate({_id: id},req.query, function(error, data,value){
 		res.send({data: data});
 	})

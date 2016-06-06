@@ -82,8 +82,8 @@ db.once('open', function (callback) {
 		children: [],
 	});
 	var bookMenuConfigSchema = new Schema({
-		type: String,
-		name: String,
+		value: String,
+		label: String,
 	})
 	// userSchema.statics.findUserById = findItemById({errorCode:404405,message:"未找到相关的用户"});
 	//bookInfoSchema.statics.findBookById = findItemById({errorCode:404406,message:"未找到相关的书籍"});

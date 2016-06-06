@@ -51,6 +51,12 @@ var config = {
         'UNCONFIRM': '未收货',
         'UNEVALUATION': '未评价',
         'SUCCESS': '交易成功',
+    },
+    orderStatic: {
+        '_id': '书籍ID',
+        'bookName': '书名',
+        'count': '销售量',
+        'sumMon': '销售额',
     }
 }
 module.exports = config;

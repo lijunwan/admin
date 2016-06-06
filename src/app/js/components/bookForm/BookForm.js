@@ -293,7 +293,6 @@ export default class BookForm extends Component {
   componentWillReceiveProps(nextProps) {
     console.log(nextProps.book.toJS().bookInfo.data, '===123')
     if(nextProps.book.toJS().bookInfo.data) {
-        console.log('为什么不弹窗')
         message.success('保存成功！');
         const bookInfo = nextProps.book.toJS().bookInfo.data;
         if(typeof(this.state.coverFileList[0]) !== 'string') {

@@ -3,6 +3,9 @@ import SimpleTable from '../common/SimpleTable';
 import { Radio, Row, Col, Icon} from 'antd';
 import echarts from 'echarts';
 const RadioGroup = Radio.Group;
+import { DatePicker } from 'antd';
+import moment from 'moment';
+const RangePicker = DatePicker.RangePicker;
 let saleChart;
 export default class  Statistics extends Component{
     constructor(props) {
@@ -11,10 +14,11 @@ export default class  Statistics extends Component{
             sortKey: 'default',
             currentData: [],
             orgData: [],
+            timeRange:[],
         }
     }
     componentDidMount() {
-        this.props.bookBoundAC.getBookList();
+        
     }
     componentWillReceiveProps(nextProps) {
         const bookList = nextProps.book.toJS().bookList.data;
@@ -132,9 +136,30 @@ export default class  Statistics extends Component{
             }]
         });
     }
+    changeDate(value, dateString) {
+        var obj = [];
+        obj.push(moment(value[0]).format('YYYY-MM-DD'));
+        obj.push(moment(value[1]).format('YYYY-MM-DD'));
+        this.setState({
+            timeRange: obj,
+        });
+    }
+    searchRecords() {
+        this.props.orderBoundAC.getOrderStatistics({startTime: this.state.timeRange[0], endTime: this.state.timeRange[1]})
+    }
+    componentDidMount() {
+        var date = moment().format('YYYY-MM-DD');
+        this.props.bookBoundAC.getBookList();
+        this.props.orderBoundAC.getOrderStatistics({startTime: date, endTime: date})
+    }
+    modifySumMon(value) {
+        return value.toFixed(2);
+    }
     render() {
         const bookList = this.props.book.toJS().bookList.data;
-        if(!bookList) {
+        const orderStatistics = this.props.order.toJS().orderStatistics.data;
+        console.log(this.props.order.toJS().orderStatistics,'???---')
+        if(!bookList || !orderStatistics) {
             return(<div>
                     ...
                     <div id="saleNumber"></div>
@@ -153,9 +178,24 @@ export default class  Statistics extends Component{
 			body: this.state.currentData,
 			dict: 'bookStatic',
 		}
+        const staticConfig = {
+            header:[
+                {key: '_id', width: '0.2'},
+                {key: 'bookName', width: '0.1'},
+                {key: 'count', width: '0.1'},
+                {key: 'sumMon', width: '0.1',handle: this.modifySumMon.bind(this)},
+            ],
+            body: this.props.order.toJS().orderStatistics.data,
+            dict: 'orderStatic',
+        }
         return (
             <div>
-                <h1 className="title"><Icon type="line-chart" />数据统计</h1>
+                <h2 style={{margin: '10px 0'}}><Icon type="line-chart" />数据统计</h2>
+                <h3 style={{margin: '10px 0'}}>销售量统计</h3>
+                <p><a>今日销售统计</a><RangePicker style={{ width: 184 }} onChange={this.changeDate.bind(this)} value={this.state.timeRange}/> <a　onClick={this.searchRecords.bind(this)}>查询</a></p>　
+                <div style={{margin: '20px 0'}}>
+                    <SimpleTable config={staticConfig} />
+                </div>
                 <RadioGroup onChange={this.changeSortKey.bind(this)} value={this.state.sortKey}>
                     <Radio key="a" value="default">默认</Radio>
                     <Radio key="b" value="saleNumber">销量</Radio>

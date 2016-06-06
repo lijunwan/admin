@@ -56,6 +56,23 @@ Order.getOrderUnsend = function(req, res) {
 		res.send({data: list});
 	})
 }
+Order.orderStatis = function(req, res) {
+	var startTime = req.query.startTime;
+	var endTime = req.query.endTime;
+	if(startTime == endTime) {
+		endTime = moment(endTime).add(1, 'days').format('YYYY-MM-DD');
+	}
+	var start =  new  Date(startTime.replace(/-/g,   "/"));  
+	var end = new Date(endTime.replace(/-/g,   "/"));
+	console.log(start,end,'?????');
+	db['order'].aggregate([
+		{$project: {bookId:1, bookName:1, time:1,count:1,sumMon:1}},
+		{$match:{time: {$gte: start,$lte: end}}},
+		{$group:{_id:'$bookId',count: {$sum:'$count'}, sumMon:{$sum: '$sumMon'},bookName:{$last: '$bookName'}}}
+	]).sort({count: -1}).exec(function(error, data){
+		res.send({data: data});
+	})
+}
 function getKeyValueList(list,key) {
 	const result = [];
 	list.map(function(item){
