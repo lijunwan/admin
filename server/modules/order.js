@@ -17,7 +17,9 @@ Order.searchOrder = function(req, res) {
 	if(req.query.orderId) {
 		db['order'].findById(req.query.orderId, function(error, data) {
 			const list = [];
-			list.push(data);
+			if(data) {
+				list.push(data);
+			}
 			res.send({data: list});
 		})
 	} else {
@@ -62,7 +64,7 @@ Order.orderStatis = function(req, res) {
 	if(startTime == endTime) {
 		endTime = moment(endTime).add(1, 'days').format('YYYY-MM-DD');
 	}
-	var start =  new  Date(startTime.replace(/-/g,   "/"));  
+	var start =  new  Date(startTime.replace(/-/g,   "/"));
 	var end = new Date(endTime.replace(/-/g,   "/"));
 	console.log(start,end,'?????');
 	db['order'].aggregate([

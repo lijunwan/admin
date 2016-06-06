@@ -45,14 +45,13 @@ export default class App extends Component{
     }
   }
   getUnsendOrder() {
-    console.log(this.props,'///')
     this.props.orderBoundAC.getOrderUnsend();
   }
   render() {
       return (
           <div>
             {
-                this.props.location.pathname=="login" || this.props.location.pathname =="/" ? "" :
+                this.props.location.pathname=="/login" || this.props.location.pathname =="/" ? "" :
                 <div>
                     <Header {...this.props}/>
                 </div>

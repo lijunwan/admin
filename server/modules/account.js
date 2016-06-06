@@ -29,3 +29,7 @@ Account.isLogin = function isLogin(req,res){
 	}
 
 }
+Account.logout = function logout(req,res) {
+	res.clearCookie('bookstoreAdmin');
+	res.end();
+}

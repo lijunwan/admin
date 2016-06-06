@@ -7,7 +7,38 @@ var Books = require('../modules/book');
 var ShopCart = require('../modules/shopCart');
 var Favorite = require('../modules/favorite');
 var Order = require('../modules/order');
+app.use('/api/book/*', function(req, res, next){
+    console.log(req.cookies.bookstoreAdmin)
+    if(req.cookies.bookstoreAdmin) {
+        next('route')
+        console.log(next);
+    }else {
+        res.statusCode=401;
+        res.send({errorCode:400100,message:"未授权"})
+    }
+});
+app.use('/api/order/*', function(req, res, next){
+    console.log(req.cookies.bookstoreAdmin)
+    if(req.cookies.bookstoreAdmin) {
+        next('route')
+        console.log(next);
+    }else {
+        res.statusCode=401;
+        res.send({errorCode:400100,message:"未授权"})
+    }
+});
+app.use('/api/user/*', function(req, res, next){
+    console.log(req.cookies.bookstoreAdmin)
+    if(req.cookies.bookstoreAdmin) {
+        next('route')
+        console.log(next);
+    }else {
+        res.statusCode=401;
+        res.send({errorCode:400100,message:"未授权"})
+    }
+});
 app.post('/api/account/login',Account.checkLogin);
+app.del('/api/account/logout',Account.logout);
 app.get('/api/log',Account.isLogin);
 app.get('/api/book/bookMenu', Books.getBookMenu);
 app.get('/api/book/addbook', Books.addBook);
@@ -43,16 +74,6 @@ app.get('/api/order/statistc', Order.orderStatis);
 // app.get('/api/book/searchByType', Books.searchByType);
 // app.get('/api/book/sortBySaleNum',Books.sortBySaleNum);
 // app.get('/api/book/promBook',Books.promBook);
-app.use('/api/*', function(req, res, next){
-    console.log(req.cookies.bookstoreAdmin)
-    if(req.cookies.bookstoreAdmin) {
-        next('route')
-        console.log(next);
-    }else {
-        res.statusCode=401;
-        res.send({errorCode:400100,message:"未授权"})
-    }
-});
 // app.get('/api/user/authorization/addShopCarts', ShopCart.addBook);
 // app.get('/api/user/authorization/getShopCarts', ShopCart.getShopCartInfo);
 // app.get('/api/user/authorization/updateShopCart', ShopCart.updateShopCart);

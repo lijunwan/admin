@@ -33,6 +33,7 @@ var config = {
     },
     orderInfo: {
         '_id':'订单ID',
+        bookId: '书籍ID',
         time: '创建时间',//订单成交时间
         cover: '封面',
         bookName: '书名',

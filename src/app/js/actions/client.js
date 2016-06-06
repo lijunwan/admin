@@ -1,7 +1,7 @@
 export const CHECK_LOGIN = 'CHECK_LOGIN';
 export const GET_USER_LIST = 'GET_USER_LIST';
 import HttpRequest from 'superagent';
-
+import intercep  from './interception';
 export function checkLogin(params) {
   return dispatch => {
     console.log("????")
@@ -31,7 +31,7 @@ export function getLog(){
 export function logOut() {
   console.log("logout")
   return dispatch => {
-    HttpRequest.del('/api/user/logout')
+    HttpRequest.del('/api/account/logout')
       .end(function(err,resp){
         window.location="/"
     });
@@ -41,6 +41,7 @@ export function getUserList() {
   return dispatch => {
     HttpRequest.get('/api/user/getUserList')
       .end(function(err,resp){
+        intercep(resp);
         dispatch({
           type: GET_USER_LIST,
           data: resp.body

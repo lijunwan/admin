@@ -34,9 +34,9 @@ export default class SimpleTable extends Component {
         this.props.config.header.map((obj, idx)=>{
         const width = obj.width *100 + '%';
             list.push(
-                <td style={{width: width}} key={idx}>
+                <th style={{width: width}} key={idx}>
                     {config[this.props.config.dict][obj.key]}
-                </td>
+                </th>
             )
         });
         return list;
@@ -80,9 +80,12 @@ export default class SimpleTable extends Component {
                         {this.createBody()}
                     </tbody>
                 </table>
-                <div style={{margin: '10px 0'}}>
-                    <Pagination total = {this.state.actData.length} current={this.state.curentPage} pageSize = {this.state.size}  onChange = {this.changePage.bind(this)}/>
-                </div>
+                {
+                    this.state.actData.length < 1 ? <p style={{textAlign: 'center'}}>无记录</p> :
+                     <div style={{margin: '10px 0',padding: '10px 0'}}>
+                        <Pagination total = {this.state.actData.length} current={this.state.curentPage} pageSize = {this.state.size}  onChange = {this.changePage.bind(this)}/>
+                    </div>
+                }
             </div>
         )
     }

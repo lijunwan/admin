@@ -2,6 +2,7 @@ export const GET_BOOK_TYPE = 'GET_BOOK_TYPE';
 export const ADD_BOOK = 'ADD_BOOK';
 export const GET_BOOK_LIST = 'GET_BOOK_LIST';
 export const GET_BOOK_INFO = 'GET_BOOK_INFO';
+import intercep  from './interception';
 import HttpRequest from 'superagent';
 export function getBookType () {
 	 return dispatch => {
@@ -19,6 +20,7 @@ export function addBook(params) {
 	   HttpRequest.get('/api/book/addbook')
 	   .query(params)
 		.end(function(err,resp){
+		intercep(resp);
 		   dispatch({
 			 type: ADD_BOOK,
 			 data: resp.body
@@ -39,6 +41,7 @@ export function modifyBookInfo(params) {
 	   HttpRequest.get('/api/book/editBookInfo')
 	   .query(params)
 		.end(function(err,resp){
+		intercep(resp);
 		   dispatch({
 			 type: ADD_BOOK,
 			 data: resp.body
@@ -50,6 +53,7 @@ export function getBookList() {
 	return dispatch => {
 	   HttpRequest.get('/api/book/bookList')
 		.end(function(err,resp){
+			intercep(resp);
 		   dispatch({
 			 type: GET_BOOK_LIST,
 			 data: resp.body
@@ -62,6 +66,7 @@ export function searchBook(params) {
 	   HttpRequest.get('/api/book/searchBook')
 	   .query(params)
 		.end(function(err,resp){
+			intercep(resp);
 		   dispatch({
 			 type: GET_BOOK_LIST,
 			 data: resp.body

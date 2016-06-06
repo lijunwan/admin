@@ -5,10 +5,12 @@ export const GET_UNSEND_ORDER = 'GET_UNSEND_ORDER';
 export const GET_ORDER_STATIS = 'GET_ORDER_STATIS';
 import HttpRequest from 'superagent';
 import {message} from 'antd';
+import intercep  from './interception';
 export function getOrderList () {
 	 return dispatch => {
     HttpRequest.get('/api/order/orderList')
       .end(function(err,resp){
+		intercep(resp);
  	    dispatch({
           type: GET_ORDER_LIST,
           data: resp.body
@@ -21,6 +23,7 @@ export function searchOrder (params) {
     HttpRequest.get('/api/order/searchOrder')
 	  .query(params)
       .end(function(err,resp){
+		intercep(resp);
  	    dispatch({
           type: GET_ORDER_LIST,
           data: resp.body
@@ -36,6 +39,7 @@ export function sendOrde (params) {
 		if(resp.status == 200) {
 			message.success('发货成功');
 		}
+		intercep(resp);
  	    dispatch({
           type: GET_ORDER_LIST,
           data: resp.body
@@ -48,6 +52,7 @@ export function getOrderInfo (params) {
     HttpRequest.get('/api/order/getOrderInfo')
 	  .query(params)
       .end(function(err,resp){
+		intercep(resp);
  	    dispatch({
           type: GET_ORDER_INFO,
           data: resp.body
@@ -59,6 +64,7 @@ export function getOrderUnsend (params) {
 	 return dispatch => {
     HttpRequest.get('/api/order/unsendOrder')
       .end(function(err,resp){
+		intercep(resp);
  	    dispatch({
           type: GET_UNSEND_ORDER,
           data: resp.body
@@ -71,6 +77,7 @@ export function getOrderStatistics(params) {
     HttpRequest.get('/api/order/statistc')
       .query(params)
       .end(function(err,resp){
+		intercep(resp);
       dispatch({
         type: GET_ORDER_STATIS,
         data: resp.body

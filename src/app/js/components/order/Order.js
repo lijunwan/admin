@@ -104,11 +104,11 @@ export default class  Order extends Component{
 		const config = {
 			header:[
 				{key: '_id', width: '0.1'},
-				{key: 'time', width: '0.15', handle: this.modifyTime.bind(this)},
+				{key: 'time', width: '0.1', handle: this.modifyTime.bind(this)},
 				{key: 'bookId', width: '0.1'},
 				{key: 'bookName', width: '0.1'},
 				{key: 'aprice', width: '0.05'},
-				{key: 'count', width: '0.05'},
+				{key: 'count', width: '0.1'},
 				{key: 'sumMon', width: '0.05'},
 				{key: 'userId', width: '0.1'},
 				{key: 'address', width: '0.1'},
@@ -137,6 +137,7 @@ export default class  Order extends Component{
 						<Option value="UNCONFIRM">未确认收货</Option>
 						<Option value="UNEVALUATION">未评价</Option>
 						<Option value="CLOSED">已关闭</Option>
+						<Option value="EVALUATIONED">交易已完成</Option>
 						</Select>
 					</Col>
 				</Row>
