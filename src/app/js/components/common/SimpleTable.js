@@ -19,13 +19,13 @@ export default class SimpleTable extends Component {
     }
     componentWillMount() {
         this.setState({
-            curentData: this.getCurentData(this.props.config.body, 1, this.state.size),
+            curentData: this.getCurentData(this.props.config.body, this.state.curentPage, this.state.size),
             actData: this.props.config.body,
         })
     }
     componentWillReceiveProps(nextProps) {
         this.setState({
-            curentData: this.getCurentData(nextProps.config.body, 1, this.state.size),
+            curentData: this.getCurentData(nextProps.config.body, this.state.curentPage, this.state.size),
             actData: nextProps.config.body,
         })
     }

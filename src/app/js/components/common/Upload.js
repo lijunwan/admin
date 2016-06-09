@@ -69,6 +69,7 @@ export default class  Upload extends Component {
   previewFile(e) {
     let fileList = this.props.fileList.slice(0);
     const file = e.target.files;
+    console.log(file, '上传文件')
     fileList.push(e.target.files);
     const list = this.state.imgList.slice(0);
     let reader = new FileReader();

@@ -492,6 +492,7 @@ export default class BookForm extends Component {
                     <Option value="3">3</Option>
                     <Option value="2">2</Option>
                     <Option value="1">1</Option>
+                    <Option value="0">0</Option>
                 </Select>
                 折
               </Col>
