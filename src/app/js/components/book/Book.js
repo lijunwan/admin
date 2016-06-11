@@ -166,7 +166,7 @@ export default class  Book extends Component{
                             </Row>
                             <p style={{margin: '10px 0'}}>所属分类：{bookInfo.data.typeText}</p>
                             <p style={{margin: '10px 0'}}>放置区域： {config.bookArea[bookInfo.data.flag]}</p>
-                            <a className="Book-button shop-button" onClick={this.editBookInfo.bind(this)}>前往编辑</a>
+                            
                           </div>
                         </div>
                     </div>

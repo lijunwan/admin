@@ -63,7 +63,7 @@ Books.editBookInfo = function(req, res) {
 	delete req.query._id;
 	delete req.query.saleNumber;
 	delete req.query.scores;
-	db['bookInfo'].findOneAndUpdate({_id: id},req.query, function(error, data,value){
+	db['bookInfo'].findOneAndUpdate({_id: id},req.query,{new: true} ,function(error, data,value){
 		res.send({data: data});
 	})
 }
